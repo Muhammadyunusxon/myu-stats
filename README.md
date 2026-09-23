@@ -25,7 +25,7 @@ processes, every mounted volume, every sensor group and fan, battery health and 
 ## 2. Tech stack
 
 - Swift (5 language mode, clean under `-strict-concurrency=complete`), SwiftUI for views, AppKit for
-  panels, windows and the status item. Observation (`@Observable`) for state.
+  panels and windows. Observation (`@Observable`) for state.
 - Swift Package Manager — no Xcode project. Swift Testing for tests. `os.Logger` for logging.
 - String Catalog (`Resources/Localizable.xcstrings`) for localization.
 - macOS 14 Sonoma or later; Liquid Glass (`glassEffect`) on macOS 26+, `NSVisualEffectView` before that.
@@ -36,7 +36,7 @@ processes, every mounted volume, every sensor group and fan, battery health and 
 ```
 Sources/
 ├── MYUStats/            the app
-│   ├── App/             main.swift, AppDelegate (status item, quit guard), Settings (keys, enums,
+│   ├── App/             main.swift, AppDelegate (reopen, quit guard), Settings (keys, enums,
 │   │                    migration, reset), Log (unified-log categories)
 │   ├── Metrics/         samplers, SamplingEngine (actor, runs them off the main thread),
 │   │                    StatsStore (timer + observable state), StorageAnalyzer, FanController
@@ -108,8 +108,9 @@ open "build/MYU STATS.app" --args -AppleLanguages '(uz)'
 
 For development in Xcode: `open Package.swift`, then run the `MYUStats` scheme.
 
-Settings open from the gear orb under the pill, the status-bar gauge icon → **Settings…** (⌘,), a
-card's **Details** button, or by launching the app again from Finder/Spotlight.
+There is no menu bar icon. Settings open from the gear orb under the pill, a card's **Details**
+button, or by launching the app again from Finder/Spotlight. **Quit MYU STATS** sits at the foot of
+the Settings sidebar.
 
 | Pane | Options |
 |------|---------|

@@ -1901,16 +1901,6 @@
         }
       }
     },
-    "Settings…": {
-      "localizations": {
-        "uz": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Sozlamalar…"
-          }
-        }
-      }
-    },
     "Show all %lld items": {
       "localizations": {
         "uz": {

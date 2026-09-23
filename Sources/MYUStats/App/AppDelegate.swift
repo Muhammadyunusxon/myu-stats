@@ -2,11 +2,10 @@ import AppKit
 import SMCKit
 
 @MainActor
-final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
+final class AppDelegate: NSObject, NSApplicationDelegate {
     private let store = StatsStore()
     private var edgeController: EdgeController?
     private var settingsController: SettingsWindowController?
-    private var statusItem: NSStatusItem?
     private var defaultsObserver: NSObjectProtocol?
 
     func applicationDidFinishLaunching(_ notification: Notification) {
@@ -24,7 +23,6 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         )
         controller.show()
         edgeController = controller
-        setUpStatusItem()
 
         // Restart sampling only when the interval itself changes, not on every settings write.
         defaultsObserver = NotificationCenter.default.addObserver(
@@ -83,43 +81,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         return false
     }
 
-    // MARK: - Status item
-
-    private func setUpStatusItem() {
-        let item = NSStatusBar.system.statusItem(withLength: NSStatusItem.squareLength)
-        item.button?.image = NSImage(
-            systemSymbolName: "gauge.with.dots.needle.50percent",
-            accessibilityDescription: "MYU STATS"
-        )
-        let menu = NSMenu()
-        menu.delegate = self
-        item.menu = menu
-        statusItem = item
-    }
-
-    // Rebuilt on every open so check marks always reflect current settings.
-    func menuNeedsUpdate(_ menu: NSMenu) {
-        menu.removeAllItems()
-
-        let settings = NSMenuItem(title: String(localized: "Settings…"), action: #selector(openSettings), keyEquivalent: ",")
-        settings.target = self
-        menu.addItem(settings)
-
-        let autoHide = NSMenuItem(title: String(localized: "Auto-hide"), action: #selector(toggleAutoHide), keyEquivalent: "")
-        autoHide.target = self
-        autoHide.state = UserDefaults.standard.bool(forKey: SettingsKey.autoHide) ? .on : .off
-        menu.addItem(autoHide)
-
-        menu.addItem(.separator())
-        menu.addItem(NSMenuItem(title: String(localized: "Quit MYU STATS"), action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q"))
-    }
-
-    @objc private func openSettings() {
+    private func openSettings() {
         settingsController?.show(section: .metrics)
-    }
-
-    @objc private func toggleAutoHide() {
-        let defaults = UserDefaults.standard
-        defaults.set(!defaults.bool(forKey: SettingsKey.autoHide), forKey: SettingsKey.autoHide)
     }
 }
