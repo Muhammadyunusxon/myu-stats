@@ -8,9 +8,14 @@ enum DiskSampler {
             .volumeTotalCapacityKey,
             .volumeAvailableCapacityForImportantUsageKey,
         ]
-        guard let values = try? URL(fileURLWithPath: "/").resourceValues(forKeys: keys),
-              let total = values.volumeTotalCapacity,
-              let free = values.volumeAvailableCapacityForImportantUsage
+        let values: URLResourceValues
+        do {
+            values = try URL(fileURLWithPath: "/").resourceValues(forKeys: keys)
+        } catch {
+            Log.sampling.error("Startup disk capacity unavailable: \(error.localizedDescription, privacy: .public)")
+            return nil
+        }
+        guard let total = values.volumeTotalCapacity, let free = values.volumeAvailableCapacityForImportantUsage
         else { return nil }
         return DiskUsage(name: values.volumeLocalizedName ?? "Startup Disk", free: free, total: Int64(total))
     }

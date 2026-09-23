@@ -1,27 +1,28 @@
 import SwiftUI
 
 @MainActor
-final class EdgeState: ObservableObject {
-    @Published var layout = EdgeLayout(edge: .right, cellCount: 0)
-    @Published var metrics: [StatMetric] = []
-    @Published var hovered: StatMetric?
+@Observable
+final class EdgeState {
+    var layout = EdgeLayout(edge: .right, cellCount: 0)
+    var metrics: [StatMetric] = []
+    var hovered: StatMetric?
     /// False while auto-hidden: only a thin handle stays on the edge.
-    @Published var isRevealed = true
-    @Published var isOrbHovered = false
-    @Published var isHandleHovered = false
-    @Published var isDetailsHovered = false
-    @Published var isDragging = false
+    var isRevealed = true
+    var isOrbHovered = false
+    var isHandleHovered = false
+    var isDetailsHovered = false
+    var isDragging = false
     /// The pill dims while a drop on the other edge is armed, so it reads as "leaving".
-    @Published var isDropArmed = false
+    var isDropArmed = false
     /// Bumped on each orb click to spin the gear.
-    @Published var orbSpins = 0
+    var orbSpins = 0
     /// Measured height of the visible card, fed back so the controller can hit-test it.
-    @Published var cardHeight: CGFloat = 360
+    var cardHeight: CGFloat = 360
 }
 
 struct EdgeView: View {
-    @ObservedObject var store: StatsStore
-    @ObservedObject var state: EdgeState
+    var store: StatsStore
+    var state: EdgeState
 
     var body: some View {
         let layout = state.layout
@@ -223,7 +224,7 @@ private struct CardHeightKey: PreferenceKey {
 
 private struct MetricCell: View {
     var metric: StatMetric
-    @ObservedObject var store: StatsStore
+    var store: StatsStore
     var isHovered: Bool
 
     var body: some View {

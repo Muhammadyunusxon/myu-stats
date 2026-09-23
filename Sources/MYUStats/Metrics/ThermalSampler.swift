@@ -53,6 +53,10 @@ final class ThermalSampler {
         batteryKeys = temperatureKeys.filter { $0.hasPrefix("TB") && $0.hasSuffix("T") }
         fanCount = Int(smc.number("FNum") ?? 0)
 
+        Log.sampling.info("""
+            SMC sensors: \(performance.count) CPU, \(self.efficiencyKeys.count) efficiency, \(gpu.count) GPU, \
+            \(self.batteryKeys.count) battery, \(self.fanCount) fans
+            """)
         if performanceKeys.isEmpty && gpuKeys.isEmpty && fanCount == 0 { return nil }
     }
 

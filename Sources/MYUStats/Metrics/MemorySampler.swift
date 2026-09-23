@@ -16,7 +16,10 @@ final class MemorySampler {
                 host_statistics64(host, HOST_VM_INFO64, $0, &count)
             }
         }
-        guard result == KERN_SUCCESS else { return nil }
+        guard result == KERN_SUCCESS else {
+            Log.sampling.error("host_statistics64(HOST_VM_INFO64) failed: \(result)")
+            return nil
+        }
 
         let internalPages = UInt64(stats.internal_page_count)
         let purgeable = UInt64(stats.purgeable_count)

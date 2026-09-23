@@ -22,34 +22,51 @@ enum Format {
         return formatter.string(fromByteCount: Int64(bytesPerSecond)) + "/s"
     }
 
-    /// Compact form for the narrow wings: "840K", "12M", "1.2G".
+    /// Compact form for the narrow wings: "840K", "12M", "1.2G". A trickle below 1 KB/s reads "<1K".
     static func shortRate(_ bytesPerSecond: Double) -> String {
         let units: [(Double, String)] = [(1e9, "G"), (1e6, "M"), (1e3, "K")]
         for (scale, suffix) in units where bytesPerSecond >= scale {
             let value = bytesPerSecond / scale
-            return value < 10 ? String(format: "%.1f%@", value, suffix) : "\(Int(value))\(suffix)"
+            // One decimal below 10, unless it would round up to "10.0".
+            if (value * 10).rounded() < 100 { return String(format: "%.1f%@", value, suffix) }
+            return "\(Int(value.rounded()))\(suffix)"
         }
-        return "0K"
+        return bytesPerSecond > 0 ? "<1K" : "0K"
     }
 
     static func temperature(_ celsius: Double?) -> String {
         celsius.map { String(format: "%.0f °C", $0) } ?? "–"
     }
 
+    /// Plain digits, no grouping separator, so the narrow card columns stay compact.
     static func rpm(_ value: Double) -> String {
-        "\(Int(value.rounded())) rpm"
+        String(localized: "\(plain(value)) rpm")
+    }
+
+    static func rpmRange(_ low: Double, _ high: Double) -> String {
+        String(localized: "\(plain(low))–\(plain(high)) rpm")
+    }
+
+    private static func plain(_ value: Double) -> String {
+        String(Int(value.rounded()))
     }
 
     static func duration(minutes: Int) -> String {
         let hours = minutes / 60
-        return hours > 0 ? "\(hours)h \(minutes % 60)m" : "\(minutes)m"
+        return hours > 0 ? hoursMinutes(hours, minutes % 60) : String(localized: "\(minutes)m", comment: "Minutes, abbreviated")
     }
 
     static func uptime(_ seconds: TimeInterval) -> String {
         let minutes = Int(seconds) / 60
         let days = minutes / (60 * 24)
         let hours = (minutes / 60) % 24
-        return days > 0 ? "\(days)d \(hours)h" : "\(hours)h \(minutes % 60)m"
+        return days > 0
+            ? String(localized: "\(days)d \(hours)h", comment: "Days and hours, abbreviated")
+            : hoursMinutes(hours, minutes % 60)
+    }
+
+    private static func hoursMinutes(_ hours: Int, _ minutes: Int) -> String {
+        String(localized: "\(hours)h \(minutes)m", comment: "Hours and minutes, abbreviated")
     }
 }
 

@@ -8,12 +8,12 @@ enum StatMetric: String, CaseIterable, Identifiable {
 
     var title: String {
         switch self {
-        case .cpu: "CPU"
-        case .memory: "Memory"
-        case .network: "Network"
-        case .disk: "Disk"
-        case .thermals: "Thermals"
-        case .battery: "Battery"
+        case .cpu: String(localized: "CPU")
+        case .memory: String(localized: "Memory")
+        case .network: String(localized: "Network")
+        case .disk: String(localized: "Disk")
+        case .thermals: String(localized: "Thermals")
+        case .battery: String(localized: "Battery")
         }
     }
 
@@ -34,10 +34,10 @@ enum ScreenEdge: String, CaseIterable {
 
     var title: String {
         switch self {
-        case .left: "Left"
-        case .right: "Right"
-        case .top: "Top"
-        case .bottom: "Bottom"
+        case .left: String(localized: "Left")
+        case .right: String(localized: "Right")
+        case .top: String(localized: "Top")
+        case .bottom: String(localized: "Bottom")
         }
     }
 
@@ -52,17 +52,17 @@ enum SurfaceStyle: String, CaseIterable, Identifiable {
 
     var title: String {
         switch self {
-        case .glass: "Liquid Glass"
-        case .darkGlass: "Dark glass"
-        case .solid: "Solid black"
+        case .glass: String(localized: "Liquid Glass")
+        case .darkGlass: String(localized: "Dark glass")
+        case .solid: String(localized: "Solid black")
         }
     }
 
     var explanation: String {
         switch self {
-        case .glass: "Blurs what is behind it and adapts to the wallpaper."
-        case .darkGlass: "Clearer glass over a dark wash — more see-through, still readable."
-        case .solid: "Opaque, like the hardware notch. Best contrast."
+        case .glass: String(localized: "Blurs what is behind it and adapts to the wallpaper.")
+        case .darkGlass: String(localized: "Clearer glass over a dark wash — more see-through, still readable.")
+        case .solid: String(localized: "Opaque, like the hardware notch. Best contrast.")
         }
     }
 }
@@ -79,6 +79,14 @@ enum SettingsKey {
     static let showProcesses = "showProcesses"
     /// Nudge of the pill along its edge, in points: up on the side edges, right on top and bottom.
     static let verticalOffset = "verticalOffset"
+    /// UUID of the display the pill sits on; empty means the main display (the one with the menu bar).
+    static let display = "display"
+
+    /// Every user setting, for migration and "Reset to defaults".
+    static let all = [
+        edge, hiddenMetrics, metricOrder, autoHide, hideDelay, surfaceStyle, glassDarkness,
+        sampleInterval, showProcesses, verticalOffset, display,
+    ]
 }
 
 extension UserDefaults {
@@ -93,12 +101,7 @@ extension UserDefaults {
         from legacy: [String: Any]? = UserDefaults.standard.persistentDomain(forName: legacyDomain)
     ) {
         guard !bool(forKey: Self.migratedKey) else { return }
-        let keys = [
-            SettingsKey.edge, SettingsKey.hiddenMetrics, SettingsKey.metricOrder, SettingsKey.autoHide,
-            SettingsKey.hideDelay, SettingsKey.surfaceStyle, SettingsKey.glassDarkness,
-            SettingsKey.sampleInterval, SettingsKey.showProcesses, SettingsKey.verticalOffset,
-        ]
-        for key in keys {
+        for key in SettingsKey.all {
             if let value = legacy?[key] { set(value, forKey: key) }
         }
         set(true, forKey: Self.migratedKey)
@@ -116,6 +119,7 @@ extension UserDefaults {
             SettingsKey.sampleInterval: 1.0,
             SettingsKey.showProcesses: true,
             SettingsKey.verticalOffset: 0.0,
+            SettingsKey.display: "",
         ])
     }
 
@@ -127,6 +131,11 @@ extension UserDefaults {
     var hiddenMetrics: Set<StatMetric> {
         get { Set((stringArray(forKey: SettingsKey.hiddenMetrics) ?? []).compactMap(StatMetric.init(rawValue:))) }
         set { set(newValue.map(\.rawValue).sorted(), forKey: SettingsKey.hiddenMetrics) }
+    }
+
+    /// Clears every user setting, so the registered defaults apply again.
+    func resetMYUStatsSettings() {
+        SettingsKey.all.forEach(removeObject(forKey:))
     }
 
     /// User's ring order; metrics added in later versions are appended in their default place.

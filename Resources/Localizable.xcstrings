@@ -1,0 +1,2512 @@
+{
+  "sourceLanguage": "en",
+  "strings": {
+    "%@ free of %@": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "new",
+            "value": "%1$@ free of %2$@"
+          }
+        },
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ boʻsh, jami %2$@"
+          }
+        }
+      }
+    },
+    "%@ of %@": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "new",
+            "value": "%1$@ of %2$@"
+          }
+        },
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ / %2$@"
+          }
+        }
+      }
+    },
+    "%@ remaining": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ qoldi"
+          }
+        }
+      }
+    },
+    "%@ rpm": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ ayl/daq"
+          }
+        }
+      }
+    },
+    "%@ used · %@ available": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "new",
+            "value": "%1$@ used · %2$@ available"
+          }
+        },
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ band · %2$@ boʻsh"
+          }
+        }
+      }
+    },
+    "%@ used · %@ free": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "new",
+            "value": "%1$@ used · %2$@ free"
+          }
+        },
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ band · %2$@ boʻsh"
+          }
+        }
+      }
+    },
+    "%@ · %lld threads": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "new",
+            "value": "%1$@ · %2$lld threads"
+          }
+        },
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ · %2$lld ta oqim"
+          }
+        }
+      }
+    },
+    "%@ · held by MYU STATS": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ · MYU STATS ushlab turibdi"
+          }
+        }
+      }
+    },
+    "%@ · passive cooling": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ · passiv sovutish"
+          }
+        }
+      }
+    },
+    "%@ · pressure %@": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "new",
+            "value": "%1$@ · pressure %2$@"
+          }
+        },
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ · bosim: %2$@"
+          }
+        }
+      }
+    },
+    "%@–%@ rpm": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "new",
+            "value": "%1$@–%2$@ rpm"
+          }
+        },
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@–%2$@ ayl/daq"
+          }
+        }
+      }
+    },
+    "%lld cores": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld ta yadro"
+          }
+        }
+      }
+    },
+    "%lld fans · %lld spinning": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "new",
+            "value": "%1$lld fans · %2$lld spinning"
+          }
+        },
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$lld ta ventilyator · %2$lld tasi aylanmoqda"
+          }
+        }
+      }
+    },
+    "%lld fans · idle": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld ta ventilyator · tinch"
+          }
+        }
+      }
+    },
+    "%lldP + %lldE": {
+      "comment": "Performance and efficiency core counts",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "new",
+            "value": "%1$lldP + %2$lldE"
+          }
+        },
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$lldP + %2$lldE"
+          }
+        }
+      }
+    },
+    "%lldd %lldh": {
+      "comment": "Days and hours, abbreviated",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "new",
+            "value": "%1$lldd %2$lldh"
+          }
+        },
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$lld kun %2$lld soat"
+          }
+        }
+      }
+    },
+    "%lldh %lldm": {
+      "comment": "Hours and minutes, abbreviated",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "new",
+            "value": "%1$lldh %2$lldm"
+          }
+        },
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$lld soat %2$lld daq"
+          }
+        }
+      }
+    },
+    "%lldm": {
+      "comment": "Minutes, abbreviated",
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld daq"
+          }
+        }
+      }
+    },
+    "1 s": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 s"
+          }
+        }
+      }
+    },
+    "2 s": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "2 s"
+          }
+        }
+      }
+    },
+    "5 s": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "5 s"
+          }
+        }
+      }
+    },
+    "All fans": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Barcha ventilyatorlar"
+          }
+        }
+      }
+    },
+    "All of these are rebuilt when needed. Clear them with the command shown, or delete the folder in Finder.": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bularning barchasi kerak boʻlganda qayta yaratiladi. Koʻrsatilgan buyruq bilan tozalang yoki jildni Finderʼda oʻchiring."
+          }
+        }
+      }
+    },
+    "Analyze": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tahlil qilish"
+          }
+        }
+      }
+    },
+    "Android SDK, system images and emulators": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Android SDK, tizim obrazlari va emulyatorlar"
+          }
+        }
+      }
+    },
+    "Android emulator images": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Android emulyator obrazlari"
+          }
+        }
+      }
+    },
+    "App caches · rebuilt as needed": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ilova keshlari · kerak boʻlganda qayta yaratiladi"
+          }
+        }
+      }
+    },
+    "App memory": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ilovalar xotirasi"
+          }
+        }
+      }
+    },
+    "Appearance": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Koʻrinish"
+          }
+        }
+      }
+    },
+    "Apple silicon keeps its fans off until they are needed. Readings come from the SMC.": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apple silicon ventilyatorlarni kerak boʻlgunicha oʻchiq tutadi. Koʻrsatkichlar SMCʼdan olinadi."
+          }
+        }
+      }
+    },
+    "Apply": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Qoʻllash"
+          }
+        }
+      }
+    },
+    "Applying…": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Qoʻllanmoqda…"
+          }
+        }
+      }
+    },
+    "Auto": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Avto"
+          }
+        }
+      }
+    },
+    "Auto-hide": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Avtomatik yashirish"
+          }
+        }
+      }
+    },
+    "Automatic": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Avtomatik"
+          }
+        }
+      }
+    },
+    "Available": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mavjud"
+          }
+        }
+      }
+    },
+    "Back": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Orqaga"
+          }
+        }
+      }
+    },
+    "Battery": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Batareya"
+          }
+        }
+      }
+    },
+    "Behaviour": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Xatti-harakat"
+          }
+        }
+      }
+    },
+    "Blurs what is behind it and adapts to the wallpaper.": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Orqasidagini xiralashtiradi va fon rasmiga moslashadi."
+          }
+        }
+      }
+    },
+    "Bottom": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pastki"
+          }
+        }
+      }
+    },
+    "Breakdown": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tarkibi"
+          }
+        }
+      }
+    },
+    "CPU": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "CPU"
+          }
+        }
+      }
+    },
+    "CPU average": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "CPU oʻrtacha"
+          }
+        }
+      }
+    },
+    "Cached files": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keshdagi fayllar"
+          }
+        }
+      }
+    },
+    "Cancel": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bekor qilish"
+          }
+        }
+      }
+    },
+    "Cancelled — nothing changed.": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bekor qilindi, hech narsa oʻzgarmadi."
+          }
+        }
+      }
+    },
+    "Capacity": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sigʻim"
+          }
+        }
+      }
+    },
+    "Charge": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zaryad"
+          }
+        }
+      }
+    },
+    "Charge, health and power source.": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zaryad, holat va quvvat manbai."
+          }
+        }
+      }
+    },
+    "Charging": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zaryadlanmoqda"
+          }
+        }
+      }
+    },
+    "Charging · full in %@": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zaryadlanmoqda · toʻlishiga %@"
+          }
+        }
+      }
+    },
+    "Choose which rings the pill shows, and in what order.": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Panel qaysi halqalarni va qanday tartibda koʻrsatishini tanlang."
+          }
+        }
+      }
+    },
+    "Clearer glass over a dark wash — more see-through, still readable.": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Qoraytirilgan fon ustida tiniqroq shisha: koʻproq shaffof, lekin oʻqiladi."
+          }
+        }
+      }
+    },
+    "CocoaPods cache · `pod cache clean --all`": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "CocoaPods keshi · `pod cache clean --all`"
+          }
+        }
+      }
+    },
+    "Compressed": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Siqilgan"
+          }
+        }
+      }
+    },
+    "Connection": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ulanish"
+          }
+        }
+      }
+    },
+    "Core %lld": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yadro %lld"
+          }
+        }
+      }
+    },
+    "Cores": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yadrolar"
+          }
+        }
+      }
+    },
+    "Could not restore automatic fan control": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ventilyatorlarni avtomatik boshqaruvga qaytarib boʻlmadi"
+          }
+        }
+      }
+    },
+    "Critical": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kritik"
+          }
+        }
+      }
+    },
+    "Cycle count": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sikllar soni"
+          }
+        }
+      }
+    },
+    "DETAILS": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "TAFSILOTLAR"
+          }
+        }
+      }
+    },
+    "Dark glass": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Qora shisha"
+          }
+        }
+      }
+    },
+    "Darkness": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Toʻqlik"
+          }
+        }
+      }
+    },
+    "Debug symbols per iOS version · re-copied from devices": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Har bir iOS versiyasi uchun debug belgilari · qurilmalardan qayta nusxalanadi"
+          }
+        }
+      }
+    },
+    "Details": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Batafsil"
+          }
+        }
+      }
+    },
+    "Developer and app caches": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dasturchi va ilova keshlari"
+          }
+        }
+      }
+    },
+    "Disconnected display": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Uzilgan displey"
+          }
+        }
+      }
+    },
+    "Disk": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Disk"
+          }
+        }
+      }
+    },
+    "Display": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Displey"
+          }
+        }
+      }
+    },
+    "Docker images and volumes": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Docker obrazlari va hajmlari"
+          }
+        }
+      }
+    },
+    "Download": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yuklab olish"
+          }
+        }
+      }
+    },
+    "Drag the arc at the start of the pill to slide it along the edge, or onto any other edge.": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Panelni chet boʻylab yoki boshqa chetga surish uchun uning boshidagi yoyni torting."
+          }
+        }
+      }
+    },
+    "Edge": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chet"
+          }
+        }
+      }
+    },
+    "Efficiency %lld": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tejamkor %lld"
+          }
+        }
+      }
+    },
+    "Efficiency cores": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tejamkor yadrolar"
+          }
+        }
+      }
+    },
+    "Efficiency cores are listed first on Apple silicon.": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apple siliconʼda tejamkor yadrolar birinchi koʻrsatiladi."
+          }
+        }
+      }
+    },
+    "Estimating…": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hisoblanmoqda…"
+          }
+        }
+      }
+    },
+    "Every sensor group and each fan.": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Barcha sensor guruhlari va har bir ventilyator."
+          }
+        }
+      }
+    },
+    "Everything else": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Qolgan hammasi"
+          }
+        }
+      }
+    },
+    "Fan %lld": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ventilyator %lld"
+          }
+        }
+      }
+    },
+    "Fan control": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ventilyator boshqaruvi"
+          }
+        }
+      }
+    },
+    "Fan helper installed; changes need no password.": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ventilyator yordamchisi oʻrnatilgan; oʻzgarishlar parol talab qilmaydi."
+          }
+        }
+      }
+    },
+    "Fan helper removed. Fans are automatic.": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ventilyator yordamchisi oʻchirildi. Ventilyatorlar avtomatik rejimda."
+          }
+        }
+      }
+    },
+    "Fanless": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ventilyatorsiz"
+          }
+        }
+      }
+    },
+    "Fans": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ventilyatorlar"
+          }
+        }
+      }
+    },
+    "Fans are automatic.": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ventilyatorlar avtomatik rejimda."
+          }
+        }
+      }
+    },
+    "Fans are back under automatic control.": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ventilyatorlar yana avtomatik boshqaruvda."
+          }
+        }
+      }
+    },
+    "Fans are under manual control.": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ventilyatorlar qoʻlda boshqarilmoqda."
+          }
+        }
+      }
+    },
+    "Fans held at %@.": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ventilyatorlar %@ tezlikda ushlanmoqda."
+          }
+        }
+      }
+    },
+    "Fans running at full speed.": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ventilyatorlar toʻliq tezlikda ishlamoqda."
+          }
+        }
+      }
+    },
+    "Find out which folders take the most space.": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Qaysi jildlar eng koʻp joy egallashini bilib oling."
+          }
+        }
+      }
+    },
+    "Flutter / Dart packages · `flutter pub cache clean`": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Flutter / Dart paketlari · `flutter pub cache clean`"
+          }
+        }
+      }
+    },
+    "Free": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Boʻsh"
+          }
+        }
+      }
+    },
+    "Full in": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Toʻlishiga"
+          }
+        }
+      }
+    },
+    "GPU": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GPU"
+          }
+        }
+      }
+    },
+    "General": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Umumiy"
+          }
+        }
+      }
+    },
+    "Gradle caches and wrappers": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gradle keshlari va wrapperlari"
+          }
+        }
+      }
+    },
+    "Health": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Holati"
+          }
+        }
+      }
+    },
+    "Hide after": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yashirish vaqti"
+          }
+        }
+      }
+    },
+    "Homebrew downloads · `brew cleanup`": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Homebrew yuklamalari · `brew cleanup`"
+          }
+        }
+      }
+    },
+    "Hottest core": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eng issiq yadro"
+          }
+        }
+      }
+    },
+    "Hottest core %@": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eng issiq yadro %@"
+          }
+        }
+      }
+    },
+    "How the pill looks and where it sits.": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Panel qanday koʻrinishi va qayerda turishi."
+          }
+        }
+      }
+    },
+    "IPv4 address": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "IPv4 manzil"
+          }
+        }
+      }
+    },
+    "Idle": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Faolsiz"
+          }
+        }
+      }
+    },
+    "Interface": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Interfeys"
+          }
+        }
+      }
+    },
+    "Last %lld seconds": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Soʻnggi %lld soniya"
+          }
+        }
+      }
+    },
+    "Left": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chap"
+          }
+        }
+      }
+    },
+    "Level": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Daraja"
+          }
+        }
+      }
+    },
+    "Liquid Glass": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Liquid Glass"
+          }
+        }
+      }
+    },
+    "Load average": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Oʻrtacha yuklama"
+          }
+        }
+      }
+    },
+    "Load average (1 · 5 · 15 min)": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Oʻrtacha yuklama (1 · 5 · 15 daq)"
+          }
+        }
+      }
+    },
+    "Load per core, history and the busiest processes.": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Har bir yadro yuklamasi, tarix va eng band jarayonlar."
+          }
+        }
+      }
+    },
+    "Look inside": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ichini koʻrish"
+          }
+        }
+      }
+    },
+    "Low disk space — macOS may slow down": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diskda joy kam: macOS sekinlashishi mumkin"
+          }
+        }
+      }
+    },
+    "Low disk space — macOS may slow down and updates may fail.": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diskda joy kam: macOS sekinlashishi va yangilanishlar oʻrnatilmasligi mumkin."
+          }
+        }
+      }
+    },
+    "MYU STATS %@": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "MYU STATS %@"
+          }
+        }
+      }
+    },
+    "MYU STATS Settings": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "MYU STATS sozlamalari"
+          }
+        }
+      }
+    },
+    "MYU STATS needs your permission once to install its fan helper. After that, fan changes need no password.": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "MYU STATS ventilyator yordamchisini oʻrnatish uchun bir marta ruxsatingizni soʻramoqda. Shundan keyin ventilyatorni oʻzgartirish parol talab qilmaydi."
+          }
+        }
+      }
+    },
+    "MYU STATS needs your permission to remove its fan helper.": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "MYU STATS ventilyator yordamchisini oʻchirish uchun ruxsatingizni soʻramoqda."
+          }
+        }
+      }
+    },
+    "Main display": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Asosiy displey"
+          }
+        }
+      }
+    },
+    "Manual": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Qoʻlda"
+          }
+        }
+      }
+    },
+    "Manual · %@": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Qoʻlda · %@"
+          }
+        }
+      }
+    },
+    "Manual · target %@": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Qoʻlda · maqsad %@"
+          }
+        }
+      }
+    },
+    "Max": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Maks"
+          }
+        }
+      }
+    },
+    "Maximum capacity": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Maksimal sigʻim"
+          }
+        }
+      }
+    },
+    "Measured file by file, so large folders take a moment. macOS may ask MYU STATS for access to protected folders such as Documents, Downloads or Desktop. Clones and hard links count once per path, so totals are approximate.": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fayllar birma-bir oʻlchanadi, shuning uchun katta jildlar biroz vaqt oladi. macOS MYU STATSdan Documents, Downloads yoki Desktop kabi himoyalangan jildlarga ruxsat soʻrashi mumkin. Klonlar va qattiq havolalar har bir yoʻl uchun alohida hisoblanadi, shuning uchun jami taxminiy."
+          }
+        }
+      }
+    },
+    "Measuring…": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Oʻlchanmoqda…"
+          }
+        }
+      }
+    },
+    "Memory": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Xotira"
+          }
+        }
+      }
+    },
+    "Metrics": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Koʻrsatkichlar"
+          }
+        }
+      }
+    },
+    "Mode": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rejim"
+          }
+        }
+      }
+    },
+    "Move down": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pastga surish"
+          }
+        }
+      }
+    },
+    "Move up": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yuqoriga surish"
+          }
+        }
+      }
+    },
+    "Network": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tarmoq"
+          }
+        }
+      }
+    },
+    "No battery": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Batareya yoʻq"
+          }
+        }
+      }
+    },
+    "No other volumes mounted.": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Boshqa disklar ulanmagan."
+          }
+        }
+      }
+    },
+    "No temperature sensors could be read on this Mac.": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bu Macʼda harorat sensorlarini oʻqib boʻlmadi."
+          }
+        }
+      }
+    },
+    "Normal": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Normal"
+          }
+        }
+      }
+    },
+    "Not available on this Mac": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bu Macʼda mavjud emas"
+          }
+        }
+      }
+    },
+    "Not charging": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zaryadlanmayapti"
+          }
+        }
+      }
+    },
+    "Now": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hozir"
+          }
+        }
+      }
+    },
+    "Off": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Oʻchiq"
+          }
+        }
+      }
+    },
+    "Offline": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Oflayn"
+          }
+        }
+      }
+    },
+    "On battery": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Batareyadan"
+          }
+        }
+      }
+    },
+    "Opaque, like the hardware notch. Best contrast.": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Shaffof emas, xuddi apparat notch kabi. Eng yaxshi kontrast."
+          }
+        }
+      }
+    },
+    "Open MYU STATS at login": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tizimga kirganda MYU STATSni ochish"
+          }
+        }
+      }
+    },
+    "Other volumes": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Boshqa disklar"
+          }
+        }
+      }
+    },
+    "Overview": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Umumiy koʻrinish"
+          }
+        }
+      }
+    },
+    "Peak": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eng yuqori"
+          }
+        }
+      }
+    },
+    "Peak (%lld s)": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eng yuqori (%lld s)"
+          }
+        }
+      }
+    },
+    "Performance": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unumdorlik"
+          }
+        }
+      }
+    },
+    "Performance %lld": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unumdor %lld"
+          }
+        }
+      }
+    },
+    "Pick the edge another edge app is not using.": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Boshqa chet ilovasi ishlatmayotgan chetni tanlang."
+          }
+        }
+      }
+    },
+    "Pill": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Panel"
+          }
+        }
+      }
+    },
+    "Position along the edge": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chet boʻylab joylashuv"
+          }
+        }
+      }
+    },
+    "Power": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quvvat"
+          }
+        }
+      }
+    },
+    "Power adapter": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quvvat adapteri"
+          }
+        }
+      }
+    },
+    "Power adapter · %lld W": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quvvat adapteri · %lld Vt"
+          }
+        }
+      }
+    },
+    "Power source": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quvvat manbai"
+          }
+        }
+      }
+    },
+    "Pressure": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bosim"
+          }
+        }
+      }
+    },
+    "Processor": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Protsessor"
+          }
+        }
+      }
+    },
+    "Quit Anyway": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Baribir chiqish"
+          }
+        }
+      }
+    },
+    "Quit MYU STATS": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "MYU STATSdan chiqish"
+          }
+        }
+      }
+    },
+    "Range": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diapazon"
+          }
+        }
+      }
+    },
+    "Re-centre": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Markazga qaytarish"
+          }
+        }
+      }
+    },
+    "Received": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Qabul qilingan"
+          }
+        }
+      }
+    },
+    "Received since boot": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yoqilgandan beri qabul qilingan"
+          }
+        }
+      }
+    },
+    "Remaining": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Qolgan vaqt"
+          }
+        }
+      }
+    },
+    "Remove": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Oʻchirish"
+          }
+        }
+      }
+    },
+    "Rescan": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Qayta skanerlash"
+          }
+        }
+      }
+    },
+    "Reset": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tiklash"
+          }
+        }
+      }
+    },
+    "Reset every setting to its default": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Barcha sozlamalarni standart holatga qaytarish"
+          }
+        }
+      }
+    },
+    "Restore and Quit": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tiklash va chiqish"
+          }
+        }
+      }
+    },
+    "Restore automatic fan control?": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ventilyatorlarning avtomatik boshqaruvi tiklansinmi?"
+          }
+        }
+      }
+    },
+    "Right": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Oʻng"
+          }
+        }
+      }
+    },
+    "Rings": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Halqalar"
+          }
+        }
+      }
+    },
+    "Sampling": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Oʻlchash"
+          }
+        }
+      }
+    },
+    "Scanning processes costs a few percent CPU while the CPU or Memory card is open.": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "CPU yoki Xotira kartasi ochiq turganda jarayonlarni skanerlash bir necha foiz CPU sarflaydi."
+          }
+        }
+      }
+    },
+    "Sensors unavailable": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sensorlar mavjud emas"
+          }
+        }
+      }
+    },
+    "Sent": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yuborilgan"
+          }
+        }
+      }
+    },
+    "Sent since boot": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yoqilgandan beri yuborilgan"
+          }
+        }
+      }
+    },
+    "Settings…": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sozlamalar…"
+          }
+        }
+      }
+    },
+    "Show all %lld items": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hammasini koʻrsatish (%lld ta)"
+          }
+        }
+      }
+    },
+    "Show fewer": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kamroq koʻrsatish"
+          }
+        }
+      }
+    },
+    "Show in Finder": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Finderʼda koʻrsatish"
+          }
+        }
+      }
+    },
+    "Show top processes": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eng faol jarayonlarni koʻrsatish"
+          }
+        }
+      }
+    },
+    "Simulator caches": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Simulyator keshlari"
+          }
+        }
+      }
+    },
+    "Simulator devices · `xcrun simctl delete unavailable`": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Simulyator qurilmalari · `xcrun simctl delete unavailable`"
+          }
+        }
+      }
+    },
+    "Since boot": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yoqilgandan beri"
+          }
+        }
+      }
+    },
+    "Slower updates use less energy. Charts keep the last %lld samples.": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kamroq yangilanish kamroq energiya sarflaydi. Grafiklar soʻnggi %lld ta oʻlchovni saqlaydi."
+          }
+        }
+      }
+    },
+    "Solid black": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Toʻq qora"
+          }
+        }
+      }
+    },
+    "Space on every mounted volume.": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Har bir ulangan diskdagi joy."
+          }
+        }
+      }
+    },
+    "Speed": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tezlik"
+          }
+        }
+      }
+    },
+    "Startup disk": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tizim diski"
+          }
+        }
+      }
+    },
+    "Startup, performance and everything else.": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ishga tushish, unumdorlik va boshqalar."
+          }
+        }
+      }
+    },
+    "Status": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Holat"
+          }
+        }
+      }
+    },
+    "Surface": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sirt"
+          }
+        }
+      }
+    },
+    "Swap used": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Swap ishlatilgan"
+          }
+        }
+      }
+    },
+    "System": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tizim"
+          }
+        }
+      }
+    },
+    "System & other": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tizim va boshqalar"
+          }
+        }
+      }
+    },
+    "Temperature": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Harorat"
+          }
+        }
+      }
+    },
+    "Temperatures": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Haroratlar"
+          }
+        }
+      }
+    },
+    "The fan helper does not match this app's signature. Reinstall MYU STATS.": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ventilyator yordamchisi bu ilova imzosiga mos kelmaydi. MYU STATSni qayta oʻrnating."
+          }
+        }
+      }
+    },
+    "The fan helper failed its signature check. Reinstall MYU STATS.": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ventilyator yordamchisi imzo tekshiruvidan oʻtmadi. MYU STATSni qayta oʻrnating."
+          }
+        }
+      }
+    },
+    "The fan helper failed.": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ventilyator yordamchisi ishlamadi."
+          }
+        }
+      }
+    },
+    "The fan helper is missing from this build.": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bu buildda ventilyator yordamchisi yoʻq."
+          }
+        }
+      }
+    },
+    "The fans are held at a manual speed. They keep that speed after MYU STATS quits, until the Mac restarts.": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ventilyatorlar qoʻlda berilgan tezlikda ushlanmoqda. MYU STATS yopilgandan keyin ham Mac qayta ishga tushmaguncha shu tezlikda qoladi."
+          }
+        }
+      }
+    },
+    "The first change asks for your password or Touch ID once, to install a small helper; after that, changes apply straight away. Manual speeds stay until you switch back to Auto, the Mac restarts, or you quit MYU STATS (it offers to restore Auto). Speeds cannot go below a fan's minimum, and macOS still throttles the chip if it runs hot.": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Birinchi oʻzgarishda kichik yordamchini oʻrnatish uchun parol yoki Touch ID bir marta soʻraladi; shundan keyin oʻzgarishlar darhol qoʻllanadi. Qoʻlda berilgan tezlik Avto rejimiga qaytarmaguningizcha, Mac qayta ishga tushmaguncha yoki MYU STATS yopilmaguncha saqlanadi (yopilishda Avto rejimini tiklashni taklif qiladi). Tezlik ventilyatorning minimumidan past boʻlmaydi, chip qizib ketsa macOS baribir uni sekinlashtiradi."
+          }
+        }
+      }
+    },
+    "The main display is the one with the menu bar in System Settings › Displays.": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Asosiy displey: System Settings › Displays boʻlimida menyu paneli turgan displey."
+          }
+        }
+      }
+    },
+    "Thermals": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Issiqlik"
+          }
+        }
+      }
+    },
+    "This Mac has no battery.": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bu Macʼda batareya yoʻq."
+          }
+        }
+      }
+    },
+    "This Mac has no fans.": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bu Macʼda ventilyator yoʻq."
+          }
+        }
+      }
+    },
+    "This folder is empty or could not be read.": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bu jild boʻsh yoki uni oʻqib boʻlmadi."
+          }
+        }
+      }
+    },
+    "Throughput, history and the active interface.": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Oʻtkazuvchanlik, tarix va faol interfeys."
+          }
+        }
+      }
+    },
+    "Top": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yuqori"
+          }
+        }
+      }
+    },
+    "Top processes": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eng faol jarayonlar"
+          }
+        }
+      }
+    },
+    "Top processes by CPU": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "CPU boʻyicha eng faol jarayonlar"
+          }
+        }
+      }
+    },
+    "Top processes by memory": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Xotira boʻyicha eng faol jarayonlar"
+          }
+        }
+      }
+    },
+    "Total": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jami"
+          }
+        }
+      }
+    },
+    "Trash · empty it in Finder": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Savat · uni Finderʼda boʻshating"
+          }
+        }
+      }
+    },
+    "Unavailable": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mavjud emas"
+          }
+        }
+      }
+    },
+    "Unknown CPU": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nomaʼlum CPU"
+          }
+        }
+      }
+    },
+    "Update every": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yangilash oraligʻi"
+          }
+        }
+      }
+    },
+    "Upload": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yuklash"
+          }
+        }
+      }
+    },
+    "Uptime": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ishlash vaqti"
+          }
+        }
+      }
+    },
+    "Usage": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Foydalanish"
+          }
+        }
+      }
+    },
+    "Used": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Band"
+          }
+        }
+      }
+    },
+    "User": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Foydalanuvchi"
+          }
+        }
+      }
+    },
+    "User %@ · System %@ · Idle %@": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "new",
+            "value": "User %1$@ · System %2$@ · Idle %3$@"
+          }
+        },
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Foydalanuvchi %1$@ · Tizim %2$@ · Faolsiz %3$@"
+          }
+        }
+      }
+    },
+    "Waiting for permission…": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ruxsat kutilmoqda…"
+          }
+        }
+      }
+    },
+    "Warning": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ogohlantirish"
+          }
+        }
+      }
+    },
+    "What's using space": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Joyni nima egallamoqda"
+          }
+        }
+      }
+    },
+    "When hidden, only a thin tab stays on the edge. Touch the edge next to it to open the pill.": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yashirilganda chetda faqat ingichka tutqich qoladi. Panelni ochish uchun uning yonidagi chetga kursorni olib boring."
+          }
+        }
+      }
+    },
+    "Where the memory goes and who is using it.": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Xotira qayerga ketmoqda va uni kim ishlatmoqda."
+          }
+        }
+      }
+    },
+    "Wi-Fi, Ethernet and cellular only; VPN tunnels are left out so traffic is not counted twice.": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Faqat Wi-Fi, Ethernet va mobil tarmoq; trafik ikki marta hisoblanmasligi uchun VPN tunnellari kiritilmagan."
+          }
+        }
+      }
+    },
+    "Wired": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mahkamlangan"
+          }
+        }
+      }
+    },
+    "Xcode archives · keep the ones you may need to re-export": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Xcode arxivlari · qayta eksport qilish kerak boʻlishi mumkinlarini saqlang"
+          }
+        }
+      }
+    },
+    "Xcode build products · rebuilt on next build": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Xcode build natijalari · keyingi buildda qayta yaratiladi"
+          }
+        }
+      }
+    },
+    "Yarn cache": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yarn keshi"
+          }
+        }
+      }
+    },
+    "Your own processes only; system daemons need administrator rights to read.": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Faqat oʻzingizning jarayonlaringiz; tizim demonlarini oʻqish uchun administrator huquqi kerak."
+          }
+        }
+      }
+    },
+    "npm cache · `npm cache clean --force`": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "npm keshi · `npm cache clean --force`"
+          }
+        }
+      }
+    }
+  },
+  "version": "1.0"
+}

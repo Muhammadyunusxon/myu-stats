@@ -47,24 +47,37 @@ final class NetworkSampler {
     private static func readTotals() -> NetworkTotals? {
         var mib: [Int32] = [CTL_NET, PF_ROUTE, 0, 0, NET_RT_IFLIST2, 0]
         var length = 0
-        guard sysctl(&mib, UInt32(mib.count), nil, &length, nil, 0) == 0, length > 0 else { return nil }
+        guard sysctl(&mib, UInt32(mib.count), nil, &length, nil, 0) == 0, length > 0 else {
+            Log.sampling.error("sysctl(NET_RT_IFLIST2) size query failed: errno \(errno)")
+            return nil
+        }
         var buffer = [UInt8](repeating: 0, count: length)
-        guard sysctl(&mib, UInt32(mib.count), &buffer, &length, nil, 0) == 0 else { return nil }
+        guard sysctl(&mib, UInt32(mib.count), &buffer, &length, nil, 0) == 0 else {
+            Log.sampling.error("sysctl(NET_RT_IFLIST2) failed: errno \(errno)")
+            return nil
+        }
 
+        return totals(fromRouteMessages: Array(buffer.prefix(length)), isPhysical: isPhysical(index:))
+    }
+
+    /// Sums the byte counters of every `RTM_IFINFO2` message whose interface passes `isPhysical`.
+    /// Stops at a truncated or zero-length message instead of reading past the buffer.
+    static func totals(fromRouteMessages buffer: [UInt8], isPhysical: (UInt16) -> Bool) -> NetworkTotals {
         var result = NetworkTotals(received: 0, sent: 0)
         buffer.withUnsafeBytes { raw in
             var offset = 0
-            while offset + MemoryLayout<if_msghdr>.size <= length {
+            while offset + MemoryLayout<if_msghdr>.size <= raw.count {
                 let header = raw.loadUnaligned(fromByteOffset: offset, as: if_msghdr.self)
-                guard header.ifm_msglen > 0 else { break }
-                if Int32(header.ifm_type) == RTM_IFINFO2 {
+                let length = Int(header.ifm_msglen)
+                guard length > 0, offset + length <= raw.count else { break }
+                if Int32(header.ifm_type) == RTM_IFINFO2, length >= MemoryLayout<if_msghdr2>.size {
                     let message = raw.loadUnaligned(fromByteOffset: offset, as: if_msghdr2.self)
-                    if isPhysical(index: message.ifm_index) {
+                    if isPhysical(message.ifm_index) {
                         result.received += message.ifm_data.ifi_ibytes
                         result.sent += message.ifm_data.ifi_obytes
                     }
                 }
-                offset += Int(header.ifm_msglen)
+                offset += length
             }
         }
         return result

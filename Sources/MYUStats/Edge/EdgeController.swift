@@ -1,5 +1,4 @@
 import AppKit
-import Combine
 import SwiftUI
 
 /// Owns the edge panel: places it on the chosen edge, tracks hover, and runs the
@@ -12,11 +11,14 @@ final class EdgeController {
     private let dropZones = DropZoneOverlay()
     private let onOpenSettings: () -> Void
     private let onOpenDetails: (StatMetric) -> Void
+    /// Runs only while something needs watching; see `refreshPolling`.
     private var hoverTimer: Timer?
     private var hideWorkItem: DispatchWorkItem?
     private var observers: [NSObjectProtocol] = []
-    private var cancellables: Set<AnyCancellable> = []
     private var mouseMonitor: Any?
+    private var globalMoveMonitor: Any?
+    /// Last placement settings applied, so unrelated settings writes do not re-lay the panel out.
+    private var placement: PlacementSettings?
     /// Cursor position and along-offset when a move-handle drag began.
     private var dragStart: (mouse: NSPoint, offset: CGFloat)?
 
@@ -31,9 +33,17 @@ final class EdgeController {
         let host = NSHostingView(rootView: EdgeView(store: store, state: state))
         host.sizingOptions = []
         panel.contentView = host
+        panel.acceptsMouseMovedEvents = true
+        placement = PlacementSettings(.standard)
         reposition()
 
-        hoverTimer = Timer.scheduledTimer(withTimeInterval: 0.05, repeats: true) { [weak self] _ in
+        // Hover is driven by mouse movement. Over other apps, and over this panel while it ignores
+        // the mouse, moves reach the global monitor; no accessibility permission is needed for mouse
+        // events. A still mouse costs nothing: the polling timer only runs while there is something
+        // to follow up (see refreshPolling).
+        globalMoveMonitor = NSEvent.addGlobalMonitorForEvents(
+            matching: [.mouseMoved, .leftMouseDragged, .rightMouseDragged]
+        ) { [weak self] _ in
             MainActor.assumeIsolated { self?.updateHover() }
         }
 
@@ -42,7 +52,7 @@ final class EdgeController {
         // sidesteps first-click activation, which a non-activating panel would otherwise swallow,
         // and keeps receiving drag events after the cursor leaves the handle.
         mouseMonitor = NSEvent.addLocalMonitorForEvents(
-            matching: [.leftMouseDown, .leftMouseDragged, .leftMouseUp]
+            matching: [.mouseMoved, .leftMouseDown, .leftMouseDragged, .leftMouseUp]
         ) { [weak self] event in
             let window = event.window
             let type = event.type
@@ -53,24 +63,37 @@ final class EdgeController {
         }
 
         let center = NotificationCenter.default
-        for name in [NSApplication.didChangeScreenParametersNotification, UserDefaults.didChangeNotification] {
+        observers.append(center.addObserver(
+            forName: NSApplication.didChangeScreenParametersNotification, object: nil, queue: .main
+        ) { [weak self] _ in
+            MainActor.assumeIsolated { self?.reposition() }
+        })
+        observers.append(center.addObserver(
+            forName: UserDefaults.didChangeNotification, object: nil, queue: .main
+        ) { [weak self] _ in
+            MainActor.assumeIsolated { self?.settingsChanged() }
+        })
+        // While Settings is open this app is active and receives the moves itself, so poll instead.
+        for name in [NSApplication.didBecomeActiveNotification, NSApplication.didResignActiveNotification] {
             observers.append(center.addObserver(forName: name, object: nil, queue: .main) { [weak self] _ in
-                MainActor.assumeIsolated { self?.reposition() }
+                MainActor.assumeIsolated { self?.updateHover() }
             })
         }
         // Battery and thermal sensors arrive after the first slow sample; re-layout when either appears.
-        store.$battery.combineLatest(store.$thermals)
-            .map { ($0 != nil, $1 != nil) }
-            .removeDuplicates { $0 == $1 }
-            .dropFirst()
-            .sink { [weak self] _ in self?.reposition() }
-            .store(in: &cancellables)
+        store.onSensorsChanged = { [weak self] in self?.reposition() }
     }
 
     // MARK: - Placement
 
+    private func settingsChanged() {
+        let current = PlacementSettings(.standard)
+        guard current != placement else { return }
+        placement = current
+        reposition()
+    }
+
     private func reposition() {
-        guard let screen = NSScreen.screens.first else { return }
+        guard let screen = DisplayChoice.screen() else { return }
         let defaults = UserDefaults.standard
         let hidden = defaults.hiddenMetrics
         let metrics = defaults.metricOrder.filter { metric in
@@ -96,6 +119,8 @@ final class EdgeController {
         ).integral
         if panel.frame != frame { panel.setFrame(frame, display: true) }
         panel.orderFrontRegardless()
+        // The pill may have moved under a still cursor.
+        updateHover()
     }
 
     private func currentOffset(for layout: EdgeLayout) -> CGFloat {
@@ -109,6 +134,9 @@ final class EdgeController {
 
     private func handleMouse(type: NSEvent.EventType, in window: NSWindow?) -> Bool {
         switch type {
+        case .mouseMoved:
+            updateHover()
+            return false
         case .leftMouseDown:
             guard window === panel else { return false }
             if state.isOrbHovered {
@@ -152,7 +180,7 @@ final class EdgeController {
     }
 
     private func updateDropZones() {
-        guard let screen = NSScreen.screens.first else { return }
+        guard let screen = DisplayChoice.screen() else { return }
         let target = dropTarget(on: screen)
         let others = ScreenEdge.allCases.filter { $0 != state.layout.edge }
         dropZones.show(edges: others, armed: target, cursor: NSEvent.mouseLocation, screen: screen)
@@ -163,7 +191,7 @@ final class EdgeController {
     }
 
     private func finishDrag() {
-        guard let screen = NSScreen.screens.first else { return }
+        guard let screen = DisplayChoice.screen() else { return }
         let defaults = UserDefaults.standard
         let mouse = NSEvent.mouseLocation
         if let target = dropTarget(on: screen) {
@@ -182,11 +210,34 @@ final class EdgeController {
         state.isDragging = false
         withAnimation(.easeOut(duration: 0.15)) { state.isDropArmed = false }
         NSCursor.openHand.set()
+        updateHover()
     }
 
     // MARK: - Hover
 
     private func updateHover() {
+        evaluateHover()
+        refreshPolling()
+    }
+
+    /// Polls at 20 Hz only while something can change without the mouse moving: a card or pill
+    /// waiting to close, a drag, the pointer on one of the panel's buttons (the panel then takes
+    /// the mouse itself), or Settings in front. Otherwise mouse moves alone drive hover.
+    private func refreshPolling() {
+        let needed = NSApp.isActive || dragStart != nil || hideWorkItem != nil || state.hovered != nil
+            || state.isOrbHovered || state.isHandleHovered || state.isDetailsHovered
+            || (state.isRevealed && UserDefaults.standard.bool(forKey: SettingsKey.autoHide))
+        if needed, hoverTimer == nil {
+            hoverTimer = Timer.scheduledTimer(withTimeInterval: 0.05, repeats: true) { [weak self] _ in
+                MainActor.assumeIsolated { self?.updateHover() }
+            }
+        } else if !needed, let timer = hoverTimer {
+            timer.invalidate()
+            hoverTimer = nil
+        }
+    }
+
+    private func evaluateHover() {
         // A drag owns the pointer until it ends.
         guard dragStart == nil else { return }
         let mouse = NSEvent.mouseLocation
@@ -246,12 +297,13 @@ final class EdgeController {
             MainActor.assumeIsolated {
                 guard let self else { return }
                 self.hideWorkItem = nil
-                // Card first; the next tick schedules the pill with the user's hide delay.
+                // Card first; the follow-up check schedules the pill with the user's hide delay.
                 if self.state.hovered != nil {
                     self.setHovered(nil)
                 } else if pill {
                     self.setRevealed(false)
                 }
+                self.updateHover()
             }
         }
         hideWorkItem = work
@@ -297,5 +349,24 @@ final class EdgeController {
             (metric == .cpu || metric == .memory) && UserDefaults.standard.bool(forKey: SettingsKey.showProcesses),
             for: "card"
         )
+    }
+}
+
+/// The settings that decide where the pill sits and what it shows.
+private struct PlacementSettings: Equatable {
+    var edge: ScreenEdge
+    var hidden: Set<StatMetric>
+    var order: [StatMetric]
+    var offset: Double
+    var display: String
+    var autoHide: Bool
+
+    init(_ defaults: UserDefaults) {
+        edge = defaults.screenEdge
+        hidden = defaults.hiddenMetrics
+        order = defaults.metricOrder
+        offset = defaults.double(forKey: SettingsKey.verticalOffset)
+        display = defaults.string(forKey: SettingsKey.display) ?? ""
+        autoHide = defaults.bool(forKey: SettingsKey.autoHide)
     }
 }

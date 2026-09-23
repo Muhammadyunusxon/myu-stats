@@ -48,17 +48,26 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
             return .terminateNow
         }
         let alert = NSAlert()
-        alert.messageText = "Restore automatic fan control?"
-        alert.informativeText = "The fans are held at a manual speed. They keep that speed after MYU STATS quits, until the Mac restarts."
-        alert.addButton(withTitle: "Restore and Quit")
-        alert.addButton(withTitle: "Quit Anyway")
-        alert.addButton(withTitle: "Cancel")
+        alert.messageText = String(localized: "Restore automatic fan control?")
+        alert.informativeText = String(localized: "The fans are held at a manual speed. They keep that speed after MYU STATS quits, until the Mac restarts.")
+        alert.addButton(withTitle: String(localized: "Restore and Quit"))
+        alert.addButton(withTitle: String(localized: "Quit Anyway"))
+        alert.addButton(withTitle: String(localized: "Cancel"))
         NSApp.activate()
         switch alert.runModal() {
         case .alertFirstButtonReturn:
             Task {
-                await store.fans.apply(.auto(fan: nil))
-                NSApp.reply(toApplicationShouldTerminate: true)
+                let restored = await store.fans.apply(.auto(fan: nil))
+                if !restored, case .failed(let message) = store.fans.status {
+                    let failure = NSAlert()
+                    failure.alertStyle = .warning
+                    failure.messageText = String(localized: "Could not restore automatic fan control")
+                    failure.informativeText = message
+                    failure.runModal()
+                }
+                // Stay open unless the fans really are back on auto, so they are never left pinned by accident.
+                Log.fans.notice("Quit with fans restored: \(restored)")
+                NSApp.reply(toApplicationShouldTerminate: restored)
             }
             return .terminateLater
         case .alertSecondButtonReturn:
@@ -92,17 +101,17 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     func menuNeedsUpdate(_ menu: NSMenu) {
         menu.removeAllItems()
 
-        let settings = NSMenuItem(title: "Settings…", action: #selector(openSettings), keyEquivalent: ",")
+        let settings = NSMenuItem(title: String(localized: "Settings…"), action: #selector(openSettings), keyEquivalent: ",")
         settings.target = self
         menu.addItem(settings)
 
-        let autoHide = NSMenuItem(title: "Auto-hide", action: #selector(toggleAutoHide), keyEquivalent: "")
+        let autoHide = NSMenuItem(title: String(localized: "Auto-hide"), action: #selector(toggleAutoHide), keyEquivalent: "")
         autoHide.target = self
         autoHide.state = UserDefaults.standard.bool(forKey: SettingsKey.autoHide) ? .on : .off
         menu.addItem(autoHide)
 
         menu.addItem(.separator())
-        menu.addItem(NSMenuItem(title: "Quit MYU STATS", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q"))
+        menu.addItem(NSMenuItem(title: String(localized: "Quit MYU STATS"), action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q"))
     }
 
     @objc private func openSettings() {

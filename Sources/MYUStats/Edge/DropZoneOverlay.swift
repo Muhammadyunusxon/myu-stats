@@ -2,11 +2,12 @@ import AppKit
 import SwiftUI
 
 @MainActor
-final class DropZoneState: ObservableObject {
-    @Published var edge: ScreenEdge = .right
+@Observable
+final class DropZoneState {
+    var edge: ScreenEdge = .right
     /// True while the cursor is heading for this zone, so releasing moves the pill there.
-    @Published var isArmed = false
-    @Published var isVisible = false
+    var isArmed = false
+    var isVisible = false
 }
 
 /// Slots shown on the other screen edges while the move handle is dragged.
@@ -80,7 +81,7 @@ final class DropZoneOverlay {
 }
 
 private struct DropZoneView: View {
-    @ObservedObject var state: DropZoneState
+    var state: DropZoneState
 
     private var arrow: String {
         switch state.edge {

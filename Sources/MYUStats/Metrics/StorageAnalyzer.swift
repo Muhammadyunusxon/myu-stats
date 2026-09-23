@@ -1,5 +1,6 @@
 import AppKit
 import Foundation
+import Observation
 
 struct StorageItem: Identifiable, Equatable {
     let url: URL
@@ -20,17 +21,35 @@ struct StorageItem: Identifiable, Equatable {
 /// back up is instant. Measuring walks every file, which takes a while on large folders, so it runs
 /// off the main thread, a few folders at a time, and is cancelled when the page is left.
 @MainActor
-final class StorageAnalyzer: ObservableObject {
+@Observable
+final class StorageAnalyzer {
     /// Folders opened from the overview, outermost first. Empty means the overview.
-    @Published private(set) var trail: [StorageItem] = []
-    @Published private(set) var items: [StorageItem] = []
-    @Published private(set) var developerCaches: [StorageItem] = []
-    @Published private(set) var isScanning = false
-    @Published private(set) var hasScanned = false
+    private(set) var trail: [StorageItem] = []
+    private(set) var items: [StorageItem] = []
+    private(set) var developerCaches: [StorageItem] = []
+    private(set) var isScanning = false
+    private(set) var hasScanned = false
 
-    private var sizes: [URL: Int64] = [:]
-    private var task: Task<Void, Never>?
+    @ObservationIgnored private var sizes: [URL: Int64] = [:]
+    @ObservationIgnored private var task: Task<Void, Never>?
+    /// Pending re-sort while results stream in; see `record`.
+    @ObservationIgnored private var sortTask: Task<Void, Never>?
+    @ObservationIgnored private let home: URL
+    @ObservationIgnored private let extraRoots: [URL]
     private static let parallelism = 4
+    /// Results arriving closer together than this are sorted once, so rows do not jump under the pointer.
+    static let sortDelay: Duration = .milliseconds(500)
+
+    /// - Parameters:
+    ///   - home: Folder whose top-level items make up the overview.
+    ///   - extraRoots: Measured alongside them (/Applications by default).
+    init(
+        home: URL = FileManager.default.homeDirectoryForCurrentUser,
+        extraRoots: [URL] = [URL(fileURLWithPath: "/Applications")]
+    ) {
+        self.home = home
+        self.extraRoots = extraRoots
+    }
 
     var measuredTotal: Int64 { items.compactMap(\.size).reduce(0, +) }
 
@@ -39,8 +58,8 @@ final class StorageAnalyzer: ObservableObject {
     func scanOverview() {
         trail = []
         hasScanned = true
-        items = Self.overviewRoots().map(item(for:))
-        developerCaches = Self.developerCacheRoots().map { url, note in
+        items = overviewRoots().map(item(for:))
+        developerCaches = Self.developerCacheRoots(home: home).map { url, note in
             var cache = item(for: url)
             cache.note = note
             return cache
@@ -62,7 +81,7 @@ final class StorageAnalyzer: ObservableObject {
             items = Self.children(of: parent.url).map(item(for:))
             measure(items.map(\.url))
         } else {
-            items = Self.overviewRoots().map(item(for:))
+            items = overviewRoots().map(item(for:))
             measure(items.map(\.url))
         }
     }
@@ -76,6 +95,11 @@ final class StorageAnalyzer: ObservableObject {
         task?.cancel()
         task = nil
         isScanning = false
+    }
+
+    /// Waits for the current measurement to finish; for tests.
+    func waitForScan() async {
+        await task?.value
     }
 
     func reveal(_ item: StorageItem) {
@@ -97,7 +121,7 @@ final class StorageAnalyzer: ObservableObject {
     private func measure(_ urls: [URL]) {
         task?.cancel()
         let pending = urls.filter { sizes[$0] == nil }
-        sortItems()
+        sortItemsNow()
         guard !pending.isEmpty else {
             isScanning = false
             return
@@ -118,6 +142,7 @@ final class StorageAnalyzer: ObservableObject {
                 }
             }
             guard !Task.isCancelled else { return }
+            self?.sortItemsNow()
             self?.isScanning = false
         }
     }
@@ -126,11 +151,23 @@ final class StorageAnalyzer: ObservableObject {
         sizes[url] = size
         if let index = items.firstIndex(where: { $0.url == url }) { items[index].size = size }
         if let index = developerCaches.firstIndex(where: { $0.url == url }) { developerCaches[index].size = size }
-        sortItems()
+        scheduleSort()
+    }
+
+    /// Sorts once results pause for `sortDelay`, instead of on every result.
+    private func scheduleSort() {
+        sortTask?.cancel()
+        sortTask = Task { [weak self] in
+            try? await Task.sleep(for: Self.sortDelay)
+            guard !Task.isCancelled else { return }
+            self?.sortItemsNow()
+        }
     }
 
     /// Largest first; anything still being measured sinks to the bottom.
-    private func sortItems() {
+    private func sortItemsNow() {
+        sortTask?.cancel()
+        sortTask = nil
         items.sort { ($0.size ?? -1) > ($1.size ?? -1) }
         developerCaches.sort { ($0.size ?? -1) > ($1.size ?? -1) }
     }
@@ -143,7 +180,11 @@ final class StorageAnalyzer: ObservableObject {
             return Int64(values.totalFileAllocatedSize ?? values.fileAllocatedSize ?? 0)
         }
         guard let enumerator = FileManager.default.enumerator(
-            at: url, includingPropertiesForKeys: Array(keys), options: [], errorHandler: { _, _ in true }
+            at: url, includingPropertiesForKeys: Array(keys), options: [], errorHandler: { file, error in
+                // Protected or vanished entries are expected; skip them and keep walking.
+                Log.storage.debug("Skipped \(file.path, privacy: .private): \(error.localizedDescription, privacy: .public)")
+                return true
+            }
         ) else { return 0 }
 
         var total: Int64 = 0
@@ -159,39 +200,42 @@ final class StorageAnalyzer: ObservableObject {
 
     // MARK: - What to measure
 
-    private static var home: URL { FileManager.default.homeDirectoryForCurrentUser }
-
     /// Everything directly in the home folder (hidden ones too — .gradle and friends are often the
     /// biggest), plus /Applications.
-    private static func overviewRoots() -> [URL] {
-        children(of: home) + [URL(fileURLWithPath: "/Applications")]
+    private func overviewRoots() -> [URL] {
+        Self.children(of: home) + extraRoots
     }
 
     private static func children(of folder: URL) -> [URL] {
-        (try? FileManager.default.contentsOfDirectory(
-            at: folder, includingPropertiesForKeys: [.isDirectoryKey], options: []
-        )) ?? []
+        do {
+            return try FileManager.default.contentsOfDirectory(
+                at: folder, includingPropertiesForKeys: [.isDirectoryKey], options: []
+            )
+        } catch {
+            Log.storage.notice("Could not list \(folder.path, privacy: .private): \(error.localizedDescription, privacy: .public)")
+            return []
+        }
     }
 
     /// Well-known tool caches that are safe to clear; only the ones present on this Mac are listed.
-    private static func developerCacheRoots() -> [(URL, String)] {
+    private static func developerCacheRoots(home: URL) -> [(URL, String)] {
         let candidates: [(String, String)] = [
-            ("Library/Developer/Xcode/DerivedData", "Xcode build products · rebuilt on next build"),
-            ("Library/Developer/Xcode/Archives", "Xcode archives · keep the ones you may need to re-export"),
-            ("Library/Developer/Xcode/iOS DeviceSupport", "Debug symbols per iOS version · re-copied from devices"),
-            ("Library/Developer/CoreSimulator/Devices", "Simulator devices · `xcrun simctl delete unavailable`"),
-            ("Library/Developer/CoreSimulator/Caches", "Simulator caches"),
-            ("Library/Caches", "App caches · rebuilt as needed"),
-            (".gradle", "Gradle caches and wrappers"),
-            ("Library/Android/sdk", "Android SDK, system images and emulators"),
-            (".android/avd", "Android emulator images"),
-            (".pub-cache", "Flutter / Dart packages · `flutter pub cache clean`"),
-            ("Library/Caches/CocoaPods", "CocoaPods cache · `pod cache clean --all`"),
-            (".npm", "npm cache · `npm cache clean --force`"),
-            ("Library/Caches/Yarn", "Yarn cache"),
-            ("Library/Caches/Homebrew", "Homebrew downloads · `brew cleanup`"),
-            ("Library/Containers/com.docker.docker/Data", "Docker images and volumes"),
-            (".Trash", "Trash · empty it in Finder"),
+            ("Library/Developer/Xcode/DerivedData", String(localized: "Xcode build products · rebuilt on next build")),
+            ("Library/Developer/Xcode/Archives", String(localized: "Xcode archives · keep the ones you may need to re-export")),
+            ("Library/Developer/Xcode/iOS DeviceSupport", String(localized: "Debug symbols per iOS version · re-copied from devices")),
+            ("Library/Developer/CoreSimulator/Devices", String(localized: "Simulator devices · `xcrun simctl delete unavailable`")),
+            ("Library/Developer/CoreSimulator/Caches", String(localized: "Simulator caches")),
+            ("Library/Caches", String(localized: "App caches · rebuilt as needed")),
+            (".gradle", String(localized: "Gradle caches and wrappers")),
+            ("Library/Android/sdk", String(localized: "Android SDK, system images and emulators")),
+            (".android/avd", String(localized: "Android emulator images")),
+            (".pub-cache", String(localized: "Flutter / Dart packages · `flutter pub cache clean`")),
+            ("Library/Caches/CocoaPods", String(localized: "CocoaPods cache · `pod cache clean --all`")),
+            (".npm", String(localized: "npm cache · `npm cache clean --force`")),
+            ("Library/Caches/Yarn", String(localized: "Yarn cache")),
+            ("Library/Caches/Homebrew", String(localized: "Homebrew downloads · `brew cleanup`")),
+            ("Library/Containers/com.docker.docker/Data", String(localized: "Docker images and volumes")),
+            (".Trash", String(localized: "Trash · empty it in Finder")),
         ]
         return candidates.compactMap { path, note in
             let url = home.appendingPathComponent(path)

@@ -17,7 +17,7 @@ struct CPUInfo {
     let logicalCores: Int
 
     static let current = CPUInfo(
-        brand: sysctlString("machdep.cpu.brand_string") ?? "Unknown CPU",
+        brand: sysctlString("machdep.cpu.brand_string") ?? String(localized: "Unknown CPU"),
         performanceCores: sysctlInt("hw.perflevel0.physicalcpu") ?? 0,
         efficiencyCores: sysctlInt("hw.perflevel1.physicalcpu") ?? 0,
         logicalCores: ProcessInfo.processInfo.activeProcessorCount
@@ -25,8 +25,8 @@ struct CPUInfo {
 
     var coresDescription: String {
         performanceCores > 0 && efficiencyCores > 0
-            ? "\(performanceCores)P + \(efficiencyCores)E"
-            : "\(logicalCores) cores"
+            ? String(localized: "\(performanceCores)P + \(efficiencyCores)E", comment: "Performance and efficiency core counts")
+            : String(localized: "\(logicalCores) cores")
     }
 }
 
@@ -37,9 +37,9 @@ enum MemoryPressure: Int {
 
     var title: String {
         switch self {
-        case .normal: "Normal"
-        case .warning: "Warning"
-        case .critical: "Critical"
+        case .normal: String(localized: "Normal")
+        case .warning: String(localized: "Warning")
+        case .critical: String(localized: "Critical")
         }
     }
 }

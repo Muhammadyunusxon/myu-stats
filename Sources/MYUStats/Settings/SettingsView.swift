@@ -1,4 +1,3 @@
-import ServiceManagement
 import SwiftUI
 
 /// A page of the Settings window: one of the settings panes, or a metric's detail page.
@@ -19,24 +18,24 @@ enum SettingsSection: Hashable, Identifiable {
 
     var title: String {
         switch self {
-        case .metrics: "Metrics"
-        case .appearance: "Appearance"
-        case .general: "General"
+        case .metrics: String(localized: "Metrics")
+        case .appearance: String(localized: "Appearance")
+        case .general: String(localized: "General")
         case .detail(let metric): metric.title
         }
     }
 
     var subtitle: String {
         switch self {
-        case .metrics: "Choose which rings the pill shows, and in what order."
-        case .appearance: "How the pill looks and where it sits."
-        case .general: "Startup, performance and everything else."
-        case .detail(.cpu): "Load per core, history and the busiest processes."
-        case .detail(.memory): "Where the memory goes and who is using it."
-        case .detail(.network): "Throughput, history and the active interface."
-        case .detail(.disk): "Space on every mounted volume."
-        case .detail(.thermals): "Every sensor group and each fan."
-        case .detail(.battery): "Charge, health and power source."
+        case .metrics: String(localized: "Choose which rings the pill shows, and in what order.")
+        case .appearance: String(localized: "How the pill looks and where it sits.")
+        case .general: String(localized: "Startup, performance and everything else.")
+        case .detail(.cpu): String(localized: "Load per core, history and the busiest processes.")
+        case .detail(.memory): String(localized: "Where the memory goes and who is using it.")
+        case .detail(.network): String(localized: "Throughput, history and the active interface.")
+        case .detail(.disk): String(localized: "Space on every mounted volume.")
+        case .detail(.thermals): String(localized: "Every sensor group and each fan.")
+        case .detail(.battery): String(localized: "Charge, health and power source.")
         }
     }
 
@@ -52,13 +51,14 @@ enum SettingsSection: Hashable, Identifiable {
 
 /// Which page Settings shows; set from outside when a card's "Details" button is clicked.
 @MainActor
-final class SettingsNavigation: ObservableObject {
-    @Published var selection: SettingsSection = .metrics
+@Observable
+final class SettingsNavigation {
+    var selection: SettingsSection = .metrics
 }
 
 struct SettingsView: View {
-    @ObservedObject var store: StatsStore
-    @ObservedObject var navigation: SettingsNavigation
+    var store: StatsStore
+    var navigation: SettingsNavigation
     let quit: () -> Void
 
     @Namespace private var selectionSpace
@@ -123,7 +123,7 @@ struct SettingsView: View {
                             .fill(LinearGradient(colors: [Level.accent, Level.accent.opacity(0.6)],
                                                  startPoint: .top, endPoint: .bottom))
                     )
-                Text("MYU STATS")
+                Text(verbatim: "MYU STATS")
                     .font(.system(size: 14, weight: .semibold))
                     .foregroundStyle(.white)
             }
@@ -308,220 +308,5 @@ private struct QuitRow: View {
         .onHover { hovering in
             withAnimation(.easeOut(duration: 0.14)) { isHovered = hovering }
         }
-    }
-}
-
-// MARK: - Metrics
-
-private struct MetricsPane: View {
-    @ObservedObject var store: StatsStore
-    @State private var order = UserDefaults.standard.metricOrder
-    @State private var hidden = UserDefaults.standard.hiddenMetrics
-    @AppStorage(SettingsKey.sampleInterval) private var interval: Double = 1
-
-    var body: some View {
-        Section("Rings") {
-            ForEach(Array(order.enumerated()), id: \.element) { index, metric in
-                MetricRow(
-                    metric: metric,
-                    isAvailable: isAvailable(metric),
-                    isShown: Binding(
-                        get: { !hidden.contains(metric) },
-                        set: { setShown(metric, $0) }
-                    ),
-                    moveUp: index > 0 ? { move(from: index, to: index - 1) } : nil,
-                    moveDown: index < order.count - 1 ? { move(from: index, to: index + 1) } : nil
-                )
-            }
-        }
-        Section {
-            Picker("Update every", selection: $interval) {
-                Text("1 s").tag(1.0)
-                Text("2 s").tag(2.0)
-                Text("5 s").tag(5.0)
-            }
-            .pickerStyle(.segmented)
-            Text("Slower updates use less energy. Charts keep the last \(StatsStore.historyLength) samples.")
-                .font(.caption)
-                .foregroundStyle(.secondary)
-                .fixedSize(horizontal: false, vertical: true)
-        } header: {
-            Text("Sampling")
-        }
-    }
-
-    private func isAvailable(_ metric: StatMetric) -> Bool {
-        switch metric {
-        case .battery: store.battery != nil
-        case .thermals: store.thermals != nil
-        default: true
-        }
-    }
-
-    private func setShown(_ metric: StatMetric, _ shown: Bool) {
-        if shown {
-            hidden.remove(metric)
-        } else if hidden.count < StatMetric.allCases.count - 1 {
-            hidden.insert(metric)
-        }
-        UserDefaults.standard.hiddenMetrics = hidden
-    }
-
-    private func move(from source: Int, to destination: Int) {
-        withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) { order.swapAt(source, destination) }
-        UserDefaults.standard.metricOrder = order
-    }
-}
-
-private struct MetricRow: View {
-    var metric: StatMetric
-    var isAvailable: Bool
-    @Binding var isShown: Bool
-    var moveUp: (() -> Void)?
-    var moveDown: (() -> Void)?
-
-    var body: some View {
-        HStack(spacing: 10) {
-            Image(systemName: metric.symbol)
-                .font(.system(size: 12))
-                .foregroundStyle(.white.opacity(isAvailable ? 0.85 : 0.35))
-                .frame(width: 18)
-            VStack(alignment: .leading, spacing: 1) {
-                Text(metric.title)
-                if !isAvailable {
-                    Text("Not available on this Mac").font(.caption).foregroundStyle(.secondary)
-                }
-            }
-            Spacer()
-            Button(action: { moveUp?() }) { Image(systemName: "chevron.up") }
-                .buttonStyle(SettingsIconButtonStyle())
-                .disabled(moveUp == nil)
-                .help("Move up")
-            Button(action: { moveDown?() }) { Image(systemName: "chevron.down") }
-                .buttonStyle(SettingsIconButtonStyle())
-                .disabled(moveDown == nil)
-                .help("Move down")
-            Toggle("", isOn: $isShown)
-                .labelsHidden()
-                .toggleStyle(.switch)
-                .controlSize(.small)
-        }
-    }
-}
-
-// MARK: - Appearance
-
-private struct AppearancePane: View {
-    @AppStorage(SettingsKey.edge) private var edge: ScreenEdge = .right
-    @AppStorage(SettingsKey.surfaceStyle) private var style: SurfaceStyle = .glass
-    @AppStorage(SettingsKey.glassDarkness) private var darkness: Double = 0.28
-    @AppStorage(SettingsKey.autoHide) private var autoHide = true
-    @AppStorage(SettingsKey.hideDelay) private var hideDelay: Double = 0.45
-    @AppStorage(SettingsKey.verticalOffset) private var verticalOffset: Double = 0
-
-    var body: some View {
-        Section("Pill") {
-            Picker("Edge", selection: $edge) {
-                ForEach(ScreenEdge.allCases, id: \.self) { Text($0.title).tag($0) }
-            }
-            .pickerStyle(.segmented)
-            // An offset along one edge means nothing on another; start the new edge centred.
-            .onChange(of: edge) { _, _ in UserDefaults.standard.set(0.0, forKey: SettingsKey.verticalOffset) }
-            caption("Pick the edge another edge app is not using.")
-
-            HStack {
-                Text("Position along the edge")
-                Spacer()
-                Button("Re-centre") { UserDefaults.standard.set(0.0, forKey: SettingsKey.verticalOffset) }
-                    .disabled(verticalOffset == 0)
-            }
-            caption("Drag the arc at the start of the pill to slide it along the edge, or onto any other edge.")
-
-            Picker("Surface", selection: $style) {
-                ForEach(SurfaceStyle.allCases) { Text($0.title).tag($0) }
-            }
-            .pickerStyle(.segmented)
-            caption(style.explanation)
-
-            LabeledContent("Darkness") {
-                HStack {
-                    Slider(value: $darkness, in: 0...0.6)
-                    Text(Format.percent(darkness / 0.6)).monospacedDigit().frame(width: 38, alignment: .trailing)
-                }
-            }
-            .disabled(style == .solid)
-        }
-        Section("Behaviour") {
-            Toggle("Auto-hide", isOn: $autoHide)
-            caption("When hidden, only a thin tab stays on the edge. Touch the edge next to it to open the pill.")
-
-            LabeledContent("Hide after") {
-                HStack {
-                    Slider(value: $hideDelay, in: 0.2...2, step: 0.05)
-                    Text(String(format: "%.2f s", hideDelay)).monospacedDigit().frame(width: 46, alignment: .trailing)
-                }
-            }
-            .disabled(!autoHide)
-        }
-    }
-
-    private func caption(_ text: String) -> some View {
-        Text(text)
-            .font(.caption)
-            .foregroundStyle(.secondary)
-            .fixedSize(horizontal: false, vertical: true)
-    }
-}
-
-// MARK: - General
-
-private struct GeneralPane: View {
-    @AppStorage(SettingsKey.showProcesses) private var showProcesses = true
-    @State private var launchAtLogin = SMAppService.mainApp.status == .enabled
-    @State private var loginError: String?
-
-    var body: some View {
-        Section {
-            Toggle("Open MYU STATS at login", isOn: $launchAtLogin)
-                .onChange(of: launchAtLogin) { _, enabled in setLaunchAtLogin(enabled) }
-            if let loginError {
-                Text(loginError).font(.caption).foregroundStyle(SettingsPalette.destructive)
-            }
-        }
-        Section("Performance") {
-            Toggle("Show top processes", isOn: $showProcesses)
-            Text("Scanning processes costs a few percent CPU while the CPU or Memory card is open.")
-                .font(.caption)
-                .foregroundStyle(.secondary)
-                .fixedSize(horizontal: false, vertical: true)
-        }
-        Section {
-            HStack {
-                Text("Reset every setting to its default")
-                Spacer()
-                Button("Reset", role: .destructive) { resetSettings() }
-            }
-        }
-    }
-
-    private func setLaunchAtLogin(_ enabled: Bool) {
-        guard enabled != (SMAppService.mainApp.status == .enabled) else { return }
-        do {
-            if enabled { try SMAppService.mainApp.register() } else { try SMAppService.mainApp.unregister() }
-            loginError = nil
-        } catch {
-            loginError = error.localizedDescription
-            launchAtLogin = SMAppService.mainApp.status == .enabled
-        }
-    }
-
-    private func resetSettings() {
-        let defaults = UserDefaults.standard
-        let keys = [
-            SettingsKey.edge, SettingsKey.hiddenMetrics, SettingsKey.metricOrder, SettingsKey.autoHide,
-            SettingsKey.hideDelay, SettingsKey.surfaceStyle, SettingsKey.glassDarkness,
-            SettingsKey.sampleInterval, SettingsKey.showProcesses, SettingsKey.verticalOffset,
-        ]
-        keys.forEach(defaults.removeObject(forKey:))
     }
 }

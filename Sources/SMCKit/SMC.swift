@@ -1,19 +1,40 @@
 import Foundation
 import IOKit
+import os
+
+/// What `FanControl` needs from the SMC, so its logic can run against a fake in tests.
+public protocol SMCAccess: AnyObject {
+    func hasKey(_ key: String) -> Bool
+    func number(_ key: String) -> Double?
+    @discardableResult
+    func write(_ key: String, _ value: Double) -> Bool
+}
+
+enum SMCLog {
+    static let smc = Logger(subsystem: "com.muhammadyunusxon.myustats", category: "smc")
+    static let fans = Logger(subsystem: "com.muhammadyunusxon.myustats", category: "fans")
+}
 
 /// Minimal client for the System Management Controller (fans, temperature sensors).
 /// Undocumented interface: layout and selectors match what every open-source monitor uses,
 /// but Apple may change key names between chips and releases.
 /// Reading works for any user; writing requires root.
-public final class SMC {
+public final class SMC: SMCAccess {
     private var connection: io_connect_t = 0
     private var infoCache: [UInt32: (size: UInt32, type: UInt32)] = [:]
 
     public init?() {
         let service = IOServiceGetMatchingService(kIOMainPortDefault, IOServiceMatching("AppleSMC"))
-        guard service != 0 else { return nil }
+        guard service != 0 else {
+            SMCLog.smc.error("AppleSMC service not found")
+            return nil
+        }
         defer { IOObjectRelease(service) }
-        guard IOServiceOpen(service, mach_task_self_, 0, &connection) == kIOReturnSuccess else { return nil }
+        let status = IOServiceOpen(service, mach_task_self_, 0, &connection)
+        guard status == kIOReturnSuccess else {
+            SMCLog.smc.error("IOServiceOpen(AppleSMC) failed: \(UInt32(bitPattern: status), format: .hex)")
+            return nil
+        }
     }
 
     deinit {
@@ -41,8 +62,14 @@ public final class SMC {
     @discardableResult
     public func write(_ key: String, _ value: Double) -> Bool {
         let code = Self.fourCC(key)
-        guard let info = info(for: code), let bytes = Self.encode(value, type: info.type, size: Int(info.size))
-        else { return false }
+        guard let info = info(for: code) else {
+            SMCLog.smc.error("SMC write to unknown key \(key, privacy: .public)")
+            return false
+        }
+        guard let bytes = Self.encode(value, type: info.type, size: Int(info.size)) else {
+            SMCLog.smc.error("SMC key \(key, privacy: .public) has unsupported type \(Self.string(info.type), privacy: .public)")
+            return false
+        }
         var input = SMCParamStruct()
         input.key = code
         input.keyInfo.dataSize = info.size
@@ -50,7 +77,11 @@ public final class SMC {
         withUnsafeMutableBytes(of: &input.bytes) { buffer in
             for (index, byte) in bytes.prefix(buffer.count).enumerated() { buffer[index] = byte }
         }
-        return call(&input) != nil
+        guard call(&input) != nil else {
+            SMCLog.smc.error("SMC refused write of \(value) to \(key, privacy: .public)")
+            return false
+        }
+        return true
     }
 
     /// Every key name the SMC knows. There are a couple of thousand, so call it once.
@@ -90,7 +121,13 @@ public final class SMC {
         let status = IOConnectCallStructMethod(
             connection, 2, &input, MemoryLayout<SMCParamStruct>.stride, &output, &size
         )
-        return status == kIOReturnSuccess && output.result == 0 ? output : nil
+        guard status == kIOReturnSuccess, output.result == 0 else {
+            // Missing keys are routine while probing sensors, so this stays at debug level.
+            let (key, command, result) = (Self.string(input.key), input.command, output.result)
+            SMCLog.smc.debug("SMC call \(command) for \(key, privacy: .public) failed: status \(UInt32(bitPattern: status), format: .hex), result \(result)")
+            return nil
+        }
+        return output
     }
 
     static func decode(_ bytes: [UInt8], type: UInt32) -> Double? {

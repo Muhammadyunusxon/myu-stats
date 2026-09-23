@@ -2,6 +2,13 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+    <key>CFBundleDevelopmentRegion</key>
+    <string>en</string>
+    <key>CFBundleLocalizations</key>
+    <array>
+        <string>en</string>
+        <string>uz</string>
+    </array>
     <key>CFBundleName</key>
     <string>MYU STATS</string>
     <key>CFBundleDisplayName</key>
@@ -10,6 +17,8 @@
     <string>com.muhammadyunusxon.myustats</string>
     <key>CFBundleExecutable</key>
     <string>MYUStats</string>
+    <key>CFBundleIconFile</key>
+    <string>AppIcon</string>
     <key>CFBundlePackageType</key>
     <string>APPL</string>
     <key>CFBundleShortVersionString</key>

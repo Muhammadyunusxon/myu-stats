@@ -14,7 +14,9 @@ struct FormatTests {
 
     @Test func shortRate() {
         #expect(Format.shortRate(0) == "0K")
-        #expect(Format.shortRate(999) == "0K")
+        #expect(Format.shortRate(999) == "<1K")
+        #expect(Format.shortRate(9_960) == "10K")
+        #expect(Format.shortRate(9_940) == "9.9K")
         #expect(Format.shortRate(1_500) == "1.5K")
         #expect(Format.shortRate(12_000) == "12K")
         #expect(Format.shortRate(3_400_000) == "3.4M")
@@ -122,6 +124,20 @@ struct SettingsTests {
         defaults.set(["gpu", "cpu"], forKey: SettingsKey.metricOrder)
         #expect(defaults.metricOrder.first == .cpu)
         #expect(defaults.metricOrder.count == StatMetric.allCases.count)
+    }
+
+    @Test("reset clears every user setting back to its default")
+    func resetClearsEverything() {
+        let defaults = freshDefaults()
+        defaults.screenEdge = .left
+        defaults.hiddenMetrics = [.disk]
+        defaults.set(2.0, forKey: SettingsKey.sampleInterval)
+        defaults.set("some-display", forKey: SettingsKey.display)
+        defaults.resetMYUStatsSettings()
+        #expect(defaults.screenEdge == .right)
+        #expect(defaults.hiddenMetrics.isEmpty)
+        #expect(defaults.double(forKey: SettingsKey.sampleInterval) == 1)
+        #expect(defaults.string(forKey: SettingsKey.display) == "")
     }
 
     @Test func hiddenMetricsRoundTrip() {
