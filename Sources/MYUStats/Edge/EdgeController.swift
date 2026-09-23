@@ -150,7 +150,7 @@ final class EdgeController {
                 return true
             }
             if state.isHandleHovered {
-                dragStart = (NSEvent.mouseLocation, UserDefaults.standard.double(forKey: SettingsKey.verticalOffset))
+                dragStart = (NSEvent.mouseLocation, CGFloat(UserDefaults.standard.double(forKey: SettingsKey.verticalOffset)))
                 state.isDragging = true
                 cancelHide()
                 if state.hovered != nil { setHovered(nil) }
