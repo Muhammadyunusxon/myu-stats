@@ -7,6 +7,7 @@
 ![Apple silicon](https://img.shields.io/badge/Apple%20silicon-arm64-black)
 ![Swift](https://img.shields.io/badge/swift-5-orange)
 ![Languages](https://img.shields.io/badge/languages-English%20%7C%20Uzbek-blue)
+[![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 
 **A macOS system monitor that lives on the edge of your screen: one ring per metric, a card with
 the details when you point at one, and a full page in Settings when you want everything.**
@@ -264,3 +265,7 @@ the old settings over once; open at login has to be switched on again.
 
 Inspired by [Codenotch](https://github.com/vinzdg/codenotch)'s edge layout. A personal project, not
 affiliated with Codenotch or Apple.
+
+## License
+
+[MIT](LICENSE) © 2026 Muhammadyunusxon
