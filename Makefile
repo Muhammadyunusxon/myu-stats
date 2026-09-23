@@ -2,13 +2,17 @@ APP_NAME := MYU STATS
 APP := build/$(APP_NAME).app
 INSTALLED := /Applications/$(APP_NAME).app
 
-.PHONY: build app icon strings install run test clean
+.PHONY: build app dmg icon strings install run test clean
 
 build:
 	swift build -c release
 
 app:
 	./Scripts/bundle.sh
+
+# build/MYU-STATS.dmg: the app plus an Applications link, for a GitHub release.
+dmg:
+	./Scripts/make-dmg.sh
 
 # Regenerates Resources/AppIcon.icns from Scripts/make-icon.swift.
 icon:
