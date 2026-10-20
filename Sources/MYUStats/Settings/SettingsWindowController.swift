@@ -5,14 +5,16 @@ import SwiftUI
 @MainActor
 final class SettingsWindowController: NSObject, NSWindowDelegate {
     private let store: StatsStore
+    private let alerts: AlertMonitor
     private let navigation = SettingsNavigation()
     private var window: NSWindow?
 
     private static let firstLightCentreX: CGFloat = 26
     private static let lightSpacing: CGFloat = 22.5
 
-    init(store: StatsStore) {
+    init(store: StatsStore, alerts: AlertMonitor) {
         self.store = store
+        self.alerts = alerts
     }
 
     /// Opens Settings, optionally on a given page (a card's "Details" button passes its metric).
@@ -39,7 +41,7 @@ final class SettingsWindowController: NSObject, NSWindowDelegate {
         window.isMovableByWindowBackground = true
         window.isReleasedWhenClosed = false
         window.delegate = self
-        window.contentView = NSHostingView(rootView: SettingsView(store: store, navigation: navigation, quit: { NSApp.terminate(nil) }))
+        window.contentView = NSHostingView(rootView: SettingsView(store: store, alerts: alerts, navigation: navigation, quit: { NSApp.terminate(nil) }))
         window.center()
         self.window = window
         layoutTrafficLights(in: window)

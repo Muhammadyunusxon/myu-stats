@@ -2,15 +2,27 @@ import SwiftUI
 
 /// A page of the Settings window: one of the settings panes, or a metric's detail page.
 enum SettingsSection: Hashable, Identifiable {
-    case metrics, appearance, general
+    case metrics, appearance, alerts, general
     case detail(StatMetric)
 
-    static let settingsPanes: [SettingsSection] = [.metrics, .appearance, .general]
+    static let settingsPanes: [SettingsSection] = [.metrics, .appearance, .alerts, .general]
+
+    /// The section an `id` names, as a notification carries it.
+    init?(id: String) {
+        if let pane = Self.settingsPanes.first(where: { $0.id == id }) {
+            self = pane
+        } else if id.hasPrefix("detail."), let metric = StatMetric(rawValue: String(id.dropFirst("detail.".count))) {
+            self = .detail(metric)
+        } else {
+            return nil
+        }
+    }
 
     var id: String {
         switch self {
         case .metrics: "metrics"
         case .appearance: "appearance"
+        case .alerts: "alerts"
         case .general: "general"
         case .detail(let metric): "detail.\(metric.rawValue)"
         }
@@ -20,6 +32,7 @@ enum SettingsSection: Hashable, Identifiable {
         switch self {
         case .metrics: String(localized: "Metrics")
         case .appearance: String(localized: "Appearance")
+        case .alerts: String(localized: "Alerts")
         case .general: String(localized: "General")
         case .detail(let metric): metric.title
         }
@@ -29,13 +42,16 @@ enum SettingsSection: Hashable, Identifiable {
         switch self {
         case .metrics: String(localized: "Choose which rings the pill shows, and in what order.")
         case .appearance: String(localized: "How the pill looks and where it sits.")
+        case .alerts: String(localized: "Notifications when something needs your attention.")
         case .general: String(localized: "Startup, performance and everything else.")
         case .detail(.cpu): String(localized: "Load per core, history and the busiest processes.")
+        case .detail(.gpu): String(localized: "Load, memory and history of each graphics processor.")
         case .detail(.memory): String(localized: "Where the memory goes and who is using it.")
         case .detail(.network): String(localized: "Throughput, history and the active interface.")
         case .detail(.disk): String(localized: "Space on every mounted volume.")
         case .detail(.thermals): String(localized: "Every sensor group and each fan.")
         case .detail(.battery): String(localized: "Charge, health and power source.")
+        case .detail(.claude): String(localized: "Limits as /usage shows them, and today's use from Claude Code's logs.")
         }
     }
 
@@ -43,6 +59,7 @@ enum SettingsSection: Hashable, Identifiable {
         switch self {
         case .metrics: "chart.bar"
         case .appearance: "paintbrush"
+        case .alerts: "bell"
         case .general: "gearshape"
         case .detail(let metric): metric.symbol
         }
@@ -58,6 +75,7 @@ final class SettingsNavigation {
 
 struct SettingsView: View {
     var store: StatsStore
+    var alerts: AlertMonitor
     var navigation: SettingsNavigation
     let quit: () -> Void
 
@@ -69,14 +87,7 @@ struct SettingsView: View {
     }
 
     private var detailSections: [SettingsSection] {
-        StatMetric.allCases.filter { metric in
-            switch metric {
-            case .battery: store.battery != nil
-            case .thermals: store.thermals != nil
-            default: true
-            }
-        }
-        .map(SettingsSection.detail)
+        StatMetric.allCases.filter(store.isAvailable).map(SettingsSection.detail)
     }
 
     var body: some View {
@@ -195,6 +206,7 @@ struct SettingsView: View {
                 switch section {
                 case .metrics: MetricsPane(store: store)
                 case .appearance: AppearancePane()
+                case .alerts: AlertsPane(alerts: alerts, store: store)
                 case .general: GeneralPane()
                 case .detail(let metric): MetricDetailPane(metric: metric, store: store)
                 }

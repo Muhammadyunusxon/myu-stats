@@ -1,6 +1,42 @@
 {
   "sourceLanguage": "en",
   "strings": {
+    "%@ CPU for over %lld minutes.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "new",
+            "value": "%1$@ CPU for over %2$lld minutes."
+          }
+        },
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%2$lld daqiqadan koʻproq vaqtdan beri %1$@ CPU ishlatmoqda."
+          }
+        }
+      }
+    },
+    "%@ busy": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ band"
+          }
+        }
+      }
+    },
+    "%@ could not be cleaned: the command failed. Is Xcode installed?": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ tozalanmadi: buyruq bajarilmadi. Xcode oʻrnatilganmi?"
+          }
+        }
+      }
+    },
     "%@ free of %@": {
       "localizations": {
         "en": {
@@ -13,6 +49,32 @@
           "stringUnit": {
             "state": "translated",
             "value": "%1$@ boʻsh, jami %2$@"
+          }
+        }
+      }
+    },
+    "%@ free on %@. Disk details show what takes the space and which caches can go.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "new",
+            "value": "%1$@ free on %2$@. Disk details show what takes the space and which caches can go."
+          }
+        },
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%2$@ diskida %1$@ boʻsh joy qoldi. Disk tafsilotlarida joyni nima egallayotgani va qaysi keshlarni tozalash mumkinligi koʻrsatilgan."
+          }
+        }
+      }
+    },
+    "%@ is keeping a core busy": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ bitta yadroni band qilib turibdi"
           }
         }
       }
@@ -53,6 +115,16 @@
         }
       }
     },
+    "%@ tokens": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ token"
+          }
+        }
+      }
+    },
     "%@ used · %@ available": {
       "localizations": {
         "en": {
@@ -81,6 +153,22 @@
           "stringUnit": {
             "state": "translated",
             "value": "%1$@ band · %2$@ boʻsh"
+          }
+        }
+      }
+    },
+    "%@ · %lld cores": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "new",
+            "value": "%1$@ · %2$lld cores"
+          }
+        },
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ · %2$lld ta yadro"
           }
         }
       }
@@ -137,6 +225,112 @@
         }
       }
     },
+    "%@ · resets in %@": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "new",
+            "value": "%1$@ · resets in %2$@"
+          }
+        },
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ · qayta tiklanishiga %2$@ qoldi"
+          }
+        }
+      }
+    },
+    "%@ · used %@": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "new",
+            "value": "%1$@ · used %2$@"
+          }
+        },
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ · oxirgi marta %2$@ ishlatilgan"
+          }
+        }
+      }
+    },
+    "%@, in %@": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "new",
+            "value": "%1$@, in %2$@"
+          }
+        },
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ (%2$@ qoldi)"
+          }
+        }
+      }
+    },
+    "%@: freed %@.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "new",
+            "value": "%1$@: freed %2$@."
+          }
+        },
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@: %2$@ boʻshatildi."
+          }
+        }
+      }
+    },
+    "%@: moved %@ to the Trash. Empty the Trash to get the space back.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "new",
+            "value": "%1$@: moved %2$@ to the Trash. Empty the Trash to get the space back."
+          }
+        },
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@: %2$@ Savatga oʻtkazildi. Joyni qaytarish uchun Savatni boʻshating."
+          }
+        }
+      }
+    },
+    "%@: moved %@ to the Trash. Some items could not be moved; they may be in use.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "new",
+            "value": "%1$@: moved %2$@ to the Trash. Some items could not be moved; they may be in use."
+          }
+        },
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@: %2$@ Savatga oʻtkazildi. Baʼzi elementlarni oʻtkazib boʻlmadi, ular ishlatilayotgan boʻlishi mumkin."
+          }
+        }
+      }
+    },
+    "%@: nothing to clean.": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@: tozalanadigan narsa yoʻq."
+          }
+        }
+      }
+    },
     "%@–%@ rpm": {
       "localizations": {
         "en": {
@@ -185,6 +379,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "%lld ta ventilyator · tinch"
+          }
+        }
+      }
+    },
+    "%lld min": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld daq"
+          }
+        }
+      }
+    },
+    "%lld projects": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld ta loyiha"
           }
         }
       }
@@ -281,22 +495,72 @@
         }
       }
     },
+    "A notification opens the page it is about. Each alert comes once, and again only after things have gone back to normal.": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bildirishnoma bosilsa, u haqidagi sahifa ochiladi. Har bir ogohlantirish bir marta keladi va holat meʼyorga qaytgandan keyingina yana keladi."
+          }
+        }
+      }
+    },
+    "Above": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chegara"
+          }
+        }
+      }
+    },
+    "Above %@ for over a minute.": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bir daqiqadan koʻproq vaqt %@ dan yuqori."
+          }
+        }
+      }
+    },
+    "After a minute at critical, when macOS is short of memory and the Mac slows down.": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bosim bir daqiqa kritik boʻlib tursa: macOSʼda xotira yetishmayapti va Mac sekinlashadi."
+          }
+        }
+      }
+    },
+    "Alerts": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ogohlantirishlar"
+          }
+        }
+      }
+    },
+    "Alerts are on": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ogohlantirishlar yoqilgan"
+          }
+        }
+      }
+    },
     "All fans": {
       "localizations": {
         "uz": {
           "stringUnit": {
             "state": "translated",
             "value": "Barcha ventilyatorlar"
-          }
-        }
-      }
-    },
-    "All of these are rebuilt when needed. Clear them with the command shown, or delete the folder in Finder.": {
-      "localizations": {
-        "uz": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Bularning barchasi kerak boʻlganda qayta yaratiladi. Koʻrsatilgan buyruq bilan tozalang yoki jildni Finderʼda oʻchiring."
           }
         }
       }
@@ -387,6 +651,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Qoʻllanmoqda…"
+          }
+        }
+      }
+    },
+    "At API prices": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "API narxida"
           }
         }
       }
@@ -491,6 +765,26 @@
         }
       }
     },
+    "Busiest project": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eng faol loyiha"
+          }
+        }
+      }
+    },
+    "Busy means 90% of a core or more, the way a stuck build or a runaway script behaves. Your own processes only; checked every 30 seconds.": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Band degani yadroning 90% yoki undan koʻprogʻi, xuddi qotib qolgan build yoki toʻxtamay qolgan skript kabi. Faqat oʻzingizning jarayonlaringiz; har 30 soniyada tekshiriladi."
+          }
+        }
+      }
+    },
     "CPU": {
       "localizations": {
         "uz": {
@@ -507,6 +801,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "CPU oʻrtacha"
+          }
+        }
+      }
+    },
+    "Cache reads": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keshdan oʻqish"
+          }
+        }
+      }
+    },
+    "Cache writes": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keshga yozish"
           }
         }
       }
@@ -601,6 +915,116 @@
         }
       }
     },
+    "Claude Code answered in a form MYU STATS does not understand yet.": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Claude Code javobi MYU STATS hali tushunmaydigan koʻrinishda keldi."
+          }
+        }
+      }
+    },
+    "Claude Code did not answer. Run claude in Terminal and sign in.": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Claude Code javob bermadi. Terminalda claude ni ishga tushirib, tizimga kiring."
+          }
+        }
+      }
+    },
+    "Claude Code has not been used today.": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bugun Claude Code ishlatilmagan."
+          }
+        }
+      }
+    },
+    "Claude Code is not installed on this Mac.": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bu Macʼda Claude Code oʻrnatilmagan."
+          }
+        }
+      }
+    },
+    "Claude Code limit at %@": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Claude Code limiti %@ ga yetdi"
+          }
+        }
+      }
+    },
+    "Clean": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tozalash"
+          }
+        }
+      }
+    },
+    "Clean %@?": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ tozalansinmi?"
+          }
+        }
+      }
+    },
+    "Clean %lld unused projects?": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ishlatilmayotgan %lld ta loyiha tozalansinmi?"
+          }
+        }
+      }
+    },
+    "Clean moves a cache to the Trash, or runs its tool's own command, and the tool rebuilds what it needs. Items without it hold your own data, such as archives and emulators.": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tozalash keshni Savatga oʻtkazadi yoki vositaning oʻz buyrugʻini ishga tushiradi, vosita esa keraklisini qayta yaratadi. Tozalash tugmasi yoʻq elementlarda arxivlar va emulyatorlar kabi oʻzingizning maʼlumotlaringiz saqlanadi."
+          }
+        }
+      }
+    },
+    "Clean moves only build and .dart_tool to the Trash, what flutter clean removes. A project counts as unused after 30 days without a build or an edit. Searched in folders such as Projects, Developer and Documents.": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tozalash faqat build va .dart_tool jildlarini Savatga oʻtkazadi, flutter clean ham aynan shularni oʻchiradi. 30 kun davomida build qilinmagan yoki oʻzgartirilmagan loyiha ishlatilmayotgan hisoblanadi. Projects, Developer va Documents kabi jildlarda qidiriladi."
+          }
+        }
+      }
+    },
+    "Clean unused (%lld)": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ishlatilmayotganlarni tozalash (%lld)"
+          }
+        }
+      }
+    },
     "Clearer glass over a dark wash — more see-through, still readable.": {
       "localizations": {
         "uz": {
@@ -671,12 +1095,32 @@
         }
       }
     },
+    "Counted from Claude Code's session logs on this Mac since midnight, subagents included. The price is what the same tokens would cost on the API at list prices, not what a subscription pays.": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yarim tundan beri shu Macʼdagi Claude Code sessiya loglaridan hisoblangan, subagentlar ham kiradi. Narx: shu tokenlar APIʼda roʻyxatdagi narxlarda qancha turishi, obuna uchun toʻlanadigan summa emas."
+          }
+        }
+      }
+    },
     "Critical": {
       "localizations": {
         "uz": {
           "stringUnit": {
             "state": "translated",
             "value": "Kritik"
+          }
+        }
+      }
+    },
+    "Current session": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Joriy sessiya"
           }
         }
       }
@@ -767,6 +1211,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Disk"
+          }
+        }
+      }
+    },
+    "Disk almost full": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Disk deyarli toʻldi"
           }
         }
       }
@@ -1001,12 +1455,32 @@
         }
       }
     },
-    "Flutter / Dart packages · `flutter pub cache clean`": {
+    "Flutter / Dart packages · downloaded again by pub get": {
       "localizations": {
         "uz": {
           "stringUnit": {
             "state": "translated",
-            "value": "Flutter / Dart paketlari · `flutter pub cache clean`"
+            "value": "Flutter / Dart paketlari · pub get ularni qayta yuklab oladi"
+          }
+        }
+      }
+    },
+    "Flutter projects": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Flutter loyihalari"
+          }
+        }
+      }
+    },
+    "For longer than": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Qancha davom etsa"
           }
         }
       }
@@ -1017,6 +1491,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Boʻsh"
+          }
+        }
+      }
+    },
+    "Free space below": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Boʻsh joy chegarasi"
           }
         }
       }
@@ -1051,12 +1535,22 @@
         }
       }
     },
-    "Gradle caches and wrappers": {
+    "Gradle caches · Clean keeps the downloaded Gradle versions": {
       "localizations": {
         "uz": {
           "stringUnit": {
             "state": "translated",
-            "value": "Gradle keshlari va wrapperlari"
+            "value": "Gradle keshlari · Tozalash yuklab olingan Gradle versiyalariga tegmaydi"
+          }
+        }
+      }
+    },
+    "Graphics": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Grafik protsessor"
           }
         }
       }
@@ -1141,6 +1635,16 @@
         }
       }
     },
+    "Input": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kiruvchi"
+          }
+        }
+      }
+    },
     "Interface": {
       "localizations": {
         "uz": {
@@ -1151,12 +1655,42 @@
         }
       }
     },
+    "It moves to the Trash, and its tool rebuilds what it needs, so the next build or install may take longer.": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "U Savatga oʻtkaziladi, vositasi esa keraklisini qayta yaratadi, shuning uchun keyingi build yoki oʻrnatish uzoqroq davom etishi mumkin."
+          }
+        }
+      }
+    },
+    "Its build and .dart_tool folders move to the Trash (%@). The next run builds them again.": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Uning build va .dart_tool jildlari Savatga oʻtkaziladi (%@). Keyingi ishga tushirishda ular qayta yaratiladi."
+          }
+        }
+      }
+    },
     "Last %lld seconds": {
       "localizations": {
         "uz": {
           "stringUnit": {
             "state": "translated",
             "value": "Soʻnggi %lld soniya"
+          }
+        }
+      }
+    },
+    "Last read": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Oxirgi oʻqilgan"
           }
         }
       }
@@ -1177,6 +1711,46 @@
           "stringUnit": {
             "state": "translated",
             "value": "Daraja"
+          }
+        }
+      }
+    },
+    "Limit used": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Limitdan foydalanish"
+          }
+        }
+      }
+    },
+    "Limits": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Limitlar"
+          }
+        }
+      }
+    },
+    "Limits are asked of the installed claude command with /usage, the same figures Claude Code shows, and no prompt is sent to a model. Today's counts come from its session logs in ~/.claude/projects: only the token counts are taken from them, what was said is not kept, and nothing leaves this Mac. MYU STATS never reads Claude Code's sign-in. Hide the ring in Metrics, and turn its alert off, to stop the reads.": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Limitlar oʻrnatilgan claude buyrugʻidan /usage orqali soʻraladi, Claude Code koʻrsatadigan raqamlarning oʻzi, va modelga hech qanday soʻrov yuborilmaydi. Bugungi raqamlar ~/.claude/projects dagi sessiya loglaridan olinadi: ulardan faqat token soni olinadi, suhbat matni saqlanmaydi va hech narsa bu Macʼdan tashqariga chiqmaydi. MYU STATS Claude Code kirish maʼlumotlarini hech qachon oʻqimaydi. Oʻqishni toʻxtatish uchun Koʻrsatkichlar boʻlimida halqani yashiring va uning ogohlantirishini oʻchiring."
+          }
+        }
+      }
+    },
+    "Limits as /usage shows them, and today's use from Claude Code's logs.": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Limitlar /usage koʻrsatgandek, bugungi sarf esa Claude Code loglaridan."
           }
         }
       }
@@ -1221,12 +1795,32 @@
         }
       }
     },
+    "Load, memory and history of each graphics processor.": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Har bir grafik protsessorning yuklamasi, xotirasi va tarixi."
+          }
+        }
+      }
+    },
     "Look inside": {
       "localizations": {
         "uz": {
           "stringUnit": {
             "state": "translated",
             "value": "Ichini koʻrish"
+          }
+        }
+      }
+    },
+    "Looking for Flutter projects…": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Flutter loyihalari qidirilmoqda…"
           }
         }
       }
@@ -1381,6 +1975,26 @@
         }
       }
     },
+    "Memory in use": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ishlatilayotgan xotira"
+          }
+        }
+      }
+    },
+    "Memory pressure is critical": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Xotira bosimi kritik"
+          }
+        }
+      }
+    },
     "Metrics": {
       "localizations": {
         "uz": {
@@ -1401,12 +2015,32 @@
         }
       }
     },
+    "Models today": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bugungi modellar"
+          }
+        }
+      }
+    },
     "Move down": {
       "localizations": {
         "uz": {
           "stringUnit": {
             "state": "translated",
             "value": "Pastga surish"
+          }
+        }
+      }
+    },
+    "Move to Trash": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Savatga oʻtkazish"
           }
         }
       }
@@ -1431,6 +2065,16 @@
         }
       }
     },
+    "No GPU statistics could be read on this Mac.": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bu Macʼda GPU statistikasini oʻqib boʻlmadi."
+          }
+        }
+      }
+    },
     "No battery": {
       "localizations": {
         "uz": {
@@ -1447,6 +2091,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Boshqa disklar ulanmagan."
+          }
+        }
+      }
+    },
+    "No reset time given": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Qayta tiklanish vaqti koʻrsatilmagan"
           }
         }
       }
@@ -1491,6 +2145,56 @@
         }
       }
     },
+    "Notifications": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bildirishnomalar"
+          }
+        }
+      }
+    },
+    "Notifications are allowed.": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bildirishnomalarga ruxsat berilgan."
+          }
+        }
+      }
+    },
+    "Notifications are off for MYU STATS in System Settings.": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "System Settingsʼda MYU STATS uchun bildirishnomalar oʻchirilgan."
+          }
+        }
+      }
+    },
+    "Notifications when something needs your attention.": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Biror narsa eʼtiboringizni talab qilganda bildirishnoma."
+          }
+        }
+      }
+    },
+    "Notifications work in the MYU STATS app, not in a bare build.": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bildirishnomalar oddiy buildda emas, MYU STATS ilovasida ishlaydi."
+          }
+        }
+      }
+    },
     "Now": {
       "localizations": {
         "uz": {
@@ -1531,6 +2235,26 @@
         }
       }
     },
+    "Once for the session and once for each weekly limit, until it resets. Read every 5 minutes.": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sessiya uchun bir marta va har bir haftalik limit uchun bir marta, limit qayta tiklanguncha. Har 5 daqiqada oʻqiladi."
+          }
+        }
+      }
+    },
+    "Only after a minute above the limit, so short spikes pass quietly.": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Faqat chegaradan bir daqiqa yuqori turgandan keyin, shunda qisqa sakrashlar jimgina oʻtib ketadi."
+          }
+        }
+      }
+    },
     "Opaque, like the hardware notch. Best contrast.": {
       "localizations": {
         "uz": {
@@ -1551,12 +2275,32 @@
         }
       }
     },
+    "Open System Settings": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "System Settingsʼni ochish"
+          }
+        }
+      }
+    },
     "Other volumes": {
       "localizations": {
         "uz": {
           "stringUnit": {
             "state": "translated",
             "value": "Boshqa disklar"
+          }
+        }
+      }
+    },
+    "Output": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chiquvchi"
           }
         }
       }
@@ -1631,6 +2375,16 @@
         }
       }
     },
+    "Plan": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tarif"
+          }
+        }
+      }
+    },
     "Position along the edge": {
       "localizations": {
         "uz": {
@@ -1691,12 +2445,32 @@
         }
       }
     },
+    "Processes": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jarayonlar"
+          }
+        }
+      }
+    },
     "Processor": {
       "localizations": {
         "uz": {
           "stringUnit": {
             "state": "translated",
             "value": "Protsessor"
+          }
+        }
+      }
+    },
+    "Projects today": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bugungi loyihalar"
           }
         }
       }
@@ -1721,6 +2495,16 @@
         }
       }
     },
+    "Quit apps you are not using, or the Mac will keep slowing down.": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ishlatmayotgan ilovalaringizni yoping, aks holda Mac sekinlashishda davom etadi."
+          }
+        }
+      }
+    },
     "Range": {
       "localizations": {
         "uz": {
@@ -1737,6 +2521,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "Markazga qaytarish"
+          }
+        }
+      }
+    },
+    "Read every 5 minutes while the ring is shown or its alert is on.": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Halqa koʻrsatilgan yoki uning ogohlantirishi yoqilgan paytda har 5 daqiqada oʻqiladi."
+          }
+        }
+      }
+    },
+    "Reading Claude Code's limits…": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Claude Code limitlari oʻqilmoqda…"
           }
         }
       }
@@ -1761,6 +2565,16 @@
         }
       }
     },
+    "Refresh": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yangilash"
+          }
+        }
+      }
+    },
     "Remaining": {
       "localizations": {
         "uz": {
@@ -1777,6 +2591,42 @@
           "stringUnit": {
             "state": "translated",
             "value": "Oʻchirish"
+          }
+        }
+      }
+    },
+    "Renderer": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Renderer"
+          }
+        }
+      }
+    },
+    "Renderer %@ · Tiler %@": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "new",
+            "value": "Renderer %1$@ · Tiler %2$@"
+          }
+        },
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Renderer %1$@ · Tiler %2$@"
+          }
+        }
+      }
+    },
+    "Requests": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Soʻrovlar"
           }
         }
       }
@@ -1807,6 +2657,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "Barcha sozlamalarni standart holatga qaytarish"
+          }
+        }
+      }
+    },
+    "Resets": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Qayta tiklanadi"
+          }
+        }
+      }
+    },
+    "Resets in %@": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Qayta tiklanishiga %@ qoldi"
           }
         }
       }
@@ -1851,6 +2721,26 @@
         }
       }
     },
+    "Running hot: %@": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Qizib ketdi: %@"
+          }
+        }
+      }
+    },
+    "Runs %@, which deletes the simulators of iOS versions no longer installed. They do not go to the Trash.": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ ishga tushiriladi: u endi oʻrnatilmagan iOS versiyalarining simulyatorlarini oʻchiradi. Ular Savatga tushmaydi."
+          }
+        }
+      }
+    },
     "Sampling": {
       "localizations": {
         "uz": {
@@ -1867,6 +2757,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "CPU yoki Xotira kartasi ochiq turganda jarayonlarni skanerlash bir necha foiz CPU sarflaydi."
+          }
+        }
+      }
+    },
+    "Send a test": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sinov yuborish"
           }
         }
       }
@@ -1897,6 +2797,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Yoqilgandan beri yuborilgan"
+          }
+        }
+      }
+    },
+    "Session and weekly limits": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sessiya va haftalik limitlar"
           }
         }
       }
@@ -1987,6 +2897,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Toʻq qora"
+          }
+        }
+      }
+    },
+    "Source": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Manba"
           }
         }
       }
@@ -2101,6 +3021,16 @@
         }
       }
     },
+    "The GPU shares the Mac's unified memory, so what it uses counts toward Memory too.": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GPU Macʼning umumiy xotirasidan foydalanadi, shuning uchun u ishlatgan xotira Xotira koʻrsatkichiga ham qoʻshiladi."
+          }
+        }
+      }
+    },
     "The fan helper does not match this app's signature. Reinstall MYU STATS.": {
       "localizations": {
         "uz": {
@@ -2171,6 +3101,26 @@
         }
       }
     },
+    "The ring shows whichever limit is closest to running out.": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Halqa tugashiga eng yaqin limitni koʻrsatadi."
+          }
+        }
+      }
+    },
+    "Their build and .dart_tool folders move to the Trash (%@). Each project builds them again on its next run.": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ularning build va .dart_tool jildlari Savatga oʻtkaziladi (%@). Har bir loyiha keyingi ishga tushirishda ularni qayta yaratadi."
+          }
+        }
+      }
+    },
     "Thermals": {
       "localizations": {
         "uz": {
@@ -2211,12 +3161,72 @@
         }
       }
     },
+    "This is how MYU STATS lets you know.": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "MYU STATS sizga shunday xabar beradi."
+          }
+        }
+      }
+    },
+    "This week": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Shu hafta"
+          }
+        }
+      }
+    },
+    "This week · %@": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Shu hafta · %@"
+          }
+        }
+      }
+    },
     "Throughput, history and the active interface.": {
       "localizations": {
         "uz": {
           "stringUnit": {
             "state": "translated",
             "value": "Oʻtkazuvchanlik, tarix va faol interfeys."
+          }
+        }
+      }
+    },
+    "Tiler": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tiler"
+          }
+        }
+      }
+    },
+    "Today": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bugun"
+          }
+        }
+      }
+    },
+    "Tokens": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tokenlar"
           }
         }
       }
@@ -2291,6 +3301,16 @@
         }
       }
     },
+    "Unknown": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nomaʼlum"
+          }
+        }
+      }
+    },
     "Unknown CPU": {
       "localizations": {
         "uz": {
@@ -2301,12 +3321,52 @@
         }
       }
     },
+    "Unused": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ishlatilmayapti"
+          }
+        }
+      }
+    },
     "Update every": {
       "localizations": {
         "uz": {
           "stringUnit": {
             "state": "translated",
             "value": "Yangilash oraligʻi"
+          }
+        }
+      }
+    },
+    "Updated %lld h ago": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld soat oldin yangilandi"
+          }
+        }
+      }
+    },
+    "Updated %lld min ago": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld daqiqa oldin yangilandi"
+          }
+        }
+      }
+    },
+    "Updated just now": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hozirgina yangilandi"
           }
         }
       }
@@ -2377,6 +3437,16 @@
         }
       }
     },
+    "Video memory": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Video xotira"
+          }
+        }
+      }
+    },
     "Waiting for permission…": {
       "localizations": {
         "uz": {
@@ -2407,12 +3477,62 @@
         }
       }
     },
+    "When a limit gets close": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Limit tugashiga yaqinlashganda"
+          }
+        }
+      }
+    },
+    "When a process keeps a core busy": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jarayon yadroni uzoq band qilib tursa"
+          }
+        }
+      }
+    },
     "When hidden, only a thin tab stays on the edge. Touch the edge next to it to open the pill.": {
       "localizations": {
         "uz": {
           "stringUnit": {
             "state": "translated",
             "value": "Yashirilganda chetda faqat ingichka tutqich qoladi. Panelni ochish uchun uning yonidagi chetga kursorni olib boring."
+          }
+        }
+      }
+    },
+    "When memory pressure turns critical": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Xotira bosimi kritik boʻlganda"
+          }
+        }
+      }
+    },
+    "When the Mac runs hot": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mac qizib ketganda"
+          }
+        }
+      }
+    },
+    "When the startup disk fills up": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tizim diski toʻlganda"
           }
         }
       }
@@ -2483,6 +3603,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Faqat oʻzingizning jarayonlaringiz; tizim demonlarini oʻqish uchun administrator huquqi kerak."
+          }
+        }
+      }
+    },
+    "macOS asks for permission when you turn on the first alert.": {
+      "localizations": {
+        "uz": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Birinchi ogohlantirishni yoqqaningizda macOS ruxsat soʻraydi."
           }
         }
       }

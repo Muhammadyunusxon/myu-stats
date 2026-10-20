@@ -101,6 +101,24 @@ struct BatteryState: Equatable {
     var adapterWatts: Int?
 }
 
+/// One graphics processor, as its accelerator's performance statistics report it.
+struct GPUReading: Identifiable, Equatable, Sendable {
+    /// The accelerator's registry entry ID, stable while the GPU is attached.
+    let id: UInt64
+    var name: String
+    /// GPU cores on Apple silicon.
+    var cores: Int?
+    /// Share of time the GPU was busy, 0 to 1.
+    var utilization: Double
+    /// Apple silicon splits the work into rendering and tiling.
+    var renderer: Double?
+    var tiler: Double?
+    /// Memory the GPU is using: part of the unified memory on Apple silicon, video memory on a discrete GPU.
+    var memoryUsed: UInt64?
+    /// Video memory of a discrete GPU; nil where the GPU shares the system's memory.
+    var memoryTotal: UInt64?
+}
+
 struct ProcessUsage: Identifiable, Equatable {
     let pid: Int32
     let name: String

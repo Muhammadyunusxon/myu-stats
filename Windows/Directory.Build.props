@@ -1,0 +1,13 @@
+<Project>
+  <PropertyGroup>
+    <!-- Keep in step with CFBundleShortVersionString in Resources/Info.plist: both apps ship together. -->
+    <Version>0.2.2</Version>
+    <Product>MYU STATS</Product>
+    <Company>Muhammadyunusxon</Company>
+    <Copyright>© 2026 Muhammadyunusxon</Copyright>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <InvariantGlobalization>false</InvariantGlobalization>
+  </PropertyGroup>
+</Project>

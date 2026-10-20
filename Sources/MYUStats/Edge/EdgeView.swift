@@ -32,12 +32,19 @@ struct EdgeView: View {
 
             ForEach(Array(state.metrics.enumerated()), id: \.element) { index, metric in
                 let rect = layout.cellRect(index)
-                MetricCell(metric: metric, store: store, isHovered: state.hovered == metric)
-                    .frame(width: rect.width, height: rect.height)
-                    .scaleEffect(revealed ? 1 : 0.4, anchor: layout.edge.anchor)
-                    .opacity(revealed ? 1 : 0)
-                    .offset(layout.offset(for: rect.origin, pushedOut: revealed ? 0 : 28))
-                    .animation(revealed ? Motion.stagger(index: index) : Motion.fold, value: revealed)
+                // Folded, the cells leave the view tree: a hidden cell would still read the store, and
+                // re-lay the panel out on every tick for nobody to see.
+                ZStack {
+                    if revealed {
+                        MetricCell(metric: metric, store: store, isHovered: state.hovered == metric)
+                            .transition(.asymmetric(
+                                insertion: cellTransition(layout).animation(Motion.stagger(index: index)),
+                                removal: cellTransition(layout).animation(Motion.fold)
+                            ))
+                    }
+                }
+                .frame(width: rect.width, height: rect.height)
+                .offset(layout.offset(for: rect.origin, pushedOut: 0))
             }
 
             arcButton(.move, symbol: "arrow.up.and.down.and.arrow.left.and.right",
@@ -65,6 +72,13 @@ struct EdgeView: View {
                 if height > 0, abs(height - state.cardHeight) > 0.5 { state.cardHeight = height }
             }
         }
+    }
+
+    /// A ring shrinks and slides out through the screen edge as the pill folds.
+    private func cellTransition(_ layout: EdgeLayout) -> AnyTransition {
+        .scale(scale: 0.4, anchor: layout.edge.anchor)
+            .combined(with: .opacity)
+            .combined(with: .offset(layout.offset(for: .zero, pushedOut: 28)))
     }
 
     private func arcButton(
@@ -255,34 +269,40 @@ private struct MetricCell: View {
     private var fraction: Double {
         switch metric {
         case .cpu: store.cpu.total
+        case .gpu: store.gpu?.utilization ?? 0
         case .memory: store.memory.fraction
         // Relative to the recent peak, floored so an idle link does not look saturated.
         case .network: store.network.total / max(store.networkPeak, 250_000)
         case .disk: store.disk?.usedFraction ?? 0
         case .thermals: (store.thermals?.headline ?? 0) / 110
         case .battery: Double(store.battery?.percent ?? 0) / 100
+        case .claude: store.claude.usage?.headline?.usedFraction ?? 0
         }
     }
 
     private var color: Color {
         switch metric {
         case .cpu: Level.color(for: store.cpu.total)
+        case .gpu: store.gpu.map { Level.color(for: $0.utilization) } ?? .gray
         case .memory: Level.color(for: store.memory.pressure)
         case .network: Level.accent
         case .disk: Level.color(for: store.disk?.usedFraction ?? 0)
         case .thermals: store.thermals?.headline.map(Level.temperatureColor) ?? .gray
         case .battery: store.battery.map(Level.batteryColor) ?? .gray
+        case .claude: store.claude.usage?.headline.map { Level.color(for: $0.usedFraction) } ?? .gray
         }
     }
 
     private var value: String {
         switch metric {
         case .cpu: Format.percent(store.cpu.total)
+        case .gpu: store.gpu.map { Format.percent($0.utilization) } ?? "–"
         case .memory: Format.percent(store.memory.fraction)
         case .network: Format.shortRate(store.network.total)
         case .disk: store.disk.map { Format.percent($0.usedFraction) } ?? "–"
         case .thermals: store.thermals?.headline.map { String(format: "%.0f°", $0) } ?? "–"
         case .battery: store.battery.map { "\($0.percent)%" } ?? "–"
+        case .claude: store.claude.usage?.headline.map { Format.percent($0.usedFraction) } ?? "–"
         }
     }
 }

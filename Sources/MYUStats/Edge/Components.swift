@@ -124,6 +124,8 @@ struct DetailRow: View {
     var value: String
     var valueColor: Color = .white.opacity(0.6)
     var fontSize: CGFloat = 11
+    /// For a value that is a name rather than a number: the value shortens instead of the label.
+    var valueTruncates = false
 
     var body: some View {
         HStack(spacing: 8) {
@@ -131,12 +133,14 @@ struct DetailRow: View {
                 .foregroundStyle(.white)
                 .lineLimit(1)
                 .truncationMode(.tail)
+                .fixedSize(horizontal: valueTruncates, vertical: false)
             Spacer(minLength: 6)
             Text(value)
                 .foregroundStyle(valueColor)
                 .monospacedDigit()
                 .lineLimit(1)
-                .fixedSize()
+                .truncationMode(.middle)
+                .fixedSize(horizontal: !valueTruncates, vertical: false)
         }
         .font(.system(size: fontSize))
     }

@@ -15,7 +15,8 @@ private actor FakeSource: StatsSource {
     func sample(_ request: SampleRequest) -> StatsSample {
         requests.append(request)
         var sample = next
-        if !request.includeSlow { sample.disk = nil; sample.battery = nil; sample.networkInterface = nil }
+        if !request.includeSlow { sample.battery = nil; sample.networkInterface = nil }
+        if !request.includeDisk { sample.disk = nil }
         if !request.includeThermals { sample.thermals = nil }
         sample.processes = request.includeProcesses ? processList : nil
         return sample
@@ -24,6 +25,10 @@ private actor FakeSource: StatsSource {
     func processes(reset: Bool) -> [ProcessUsage] {
         if reset { resets += 1 }
         return processList
+    }
+
+    func watchProcesses() -> [ProcessUsage] {
+        processList
     }
 }
 
@@ -53,6 +58,18 @@ struct StatsStoreTests {
         let requests = await source.requests
         #expect(requests.map(\.includeSlow) == [true, false, false, false, false, true])
         #expect(requests.map(\.includeThermals) == [true, false, true, false, true, false])
+    }
+
+    @Test("free space is read once a minute, and right after a clean-up")
+    func diskCadence() async {
+        let source = FakeSource()
+        let store = StatsStore(source: source)
+        for _ in 0..<61 { await store.sampleNow() }
+        store.storage.onCleaned?()
+        await store.sampleNow()
+        await store.sampleNow()
+        let disk = await source.requests.enumerated().filter(\.element.includeDisk).map(\.offset)
+        #expect(disk == [0, 60, 61])
     }
 
     @Test("values read only on slow ticks stay put in between")
@@ -103,6 +120,24 @@ struct StatsStoreTests {
         store.setProcessSampling(false, for: "card")
         await store.sampleNow()
         #expect(await source.requests.last?.includeProcesses == false)
+    }
+
+    @Test("the GPU ring follows the busiest GPU and keeps its history")
+    func gpu() async {
+        let source = FakeSource()
+        let store = StatsStore(source: source)
+        await store.sampleNow()
+        #expect(!store.isAvailable(.gpu))
+        var next = sample()
+        next.gpus = [
+            GPUReading(id: 1, name: "Intel UHD Graphics 630", utilization: 0.1),
+            GPUReading(id: 2, name: "AMD Radeon Pro 5500M", utilization: 0.6, memoryUsed: 1 << 30, memoryTotal: 8 << 30),
+        ]
+        await source.setNext(next)
+        await store.sampleNow()
+        #expect(store.isAvailable(.gpu))
+        #expect(store.gpu?.id == 2)
+        #expect(store.gpuHistory == [0.6])
     }
 
     @Test("the pill hears when the battery or thermal sensors appear")

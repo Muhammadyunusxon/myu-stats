@@ -1,0 +1,37 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- Type-checks the WinUI app on macOS or Linux, where the XAML compiler and the Windows App SDK
+       build tasks cannot run. The app's C# is compiled against the WinUI reference assemblies alone
+       (the app builds its UI in code, so that covers all of it); XamlGenerated.cs stands in for what
+       the XAML compiler generates from App.xaml. Nothing here is run or shipped: build the app itself
+       on Windows with build.ps1. -->
+  <PropertyGroup>
+    <TargetFramework>net10.0-windows10.0.19041.0</TargetFramework>
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
+    <SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>
+    <OutputType>Library</OutputType>
+    <RootNamespace>MYUStats</RootNamespace>
+    <AssemblyName>MYUStats.MacCheck</AssemblyName>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <DefineConstants>$(DefineConstants);DISABLE_XAML_GENERATED_MAIN</DefineConstants>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\MYUStats\**\*.cs" Exclude="..\MYUStats\bin\**;..\MYUStats\obj\**" />
+    <Compile Include="XamlGenerated.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Reference assemblies only: the build and native assets are Windows tools. -->
+    <PackageReference Include="Microsoft.WindowsAppSDK.WinUI" Version="2.3.9" ExcludeAssets="build;buildTransitive;native" />
+    <PackageReference Include="Microsoft.WindowsAppSDK.InteractiveExperiences" Version="2.1.9" ExcludeAssets="build;buildTransitive;native" />
+    <PackageReference Include="Microsoft.WindowsAppSDK.Foundation" Version="2.3.12" ExcludeAssets="build;buildTransitive;native" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MYUStats.Core\MYUStats.Core.csproj" />
+  </ItemGroup>
+
+</Project>

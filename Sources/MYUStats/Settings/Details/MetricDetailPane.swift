@@ -12,11 +12,13 @@ struct MetricDetailPane: View {
         Group {
             switch metric {
             case .cpu: CPUDetail(store: store, showProcesses: showProcesses)
+            case .gpu: GPUDetail(store: store)
             case .memory: MemoryDetail(store: store, showProcesses: showProcesses)
             case .network: NetworkDetail(store: store)
             case .disk: DiskDetail(store: store, storage: store.storage)
             case .thermals: ThermalsDetail(store: store, fanController: store.fans)
             case .battery: BatteryDetail(store: store)
+            case .claude: ClaudeDetail(claude: store.claude)
             }
         }
         .onAppear { store.setProcessSampling(needsProcesses, for: "details") }

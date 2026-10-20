@@ -11,7 +11,7 @@ struct MetricsPane: View {
             ForEach(Array(order.enumerated()), id: \.element) { index, metric in
                 MetricRow(
                     metric: metric,
-                    isAvailable: isAvailable(metric),
+                    isAvailable: store.isAvailable(metric),
                     isShown: Binding(
                         get: { !hidden.contains(metric) },
                         set: { setShown(metric, $0) }
@@ -37,14 +37,6 @@ struct MetricsPane: View {
         }
     }
 
-    private func isAvailable(_ metric: StatMetric) -> Bool {
-        switch metric {
-        case .battery: store.battery != nil
-        case .thermals: store.thermals != nil
-        default: true
-        }
-    }
-
     private func setShown(_ metric: StatMetric, _ shown: Bool) {
         if shown {
             hidden.remove(metric)
@@ -52,6 +44,8 @@ struct MetricsPane: View {
             hidden.insert(metric)
         }
         UserDefaults.standard.hiddenMetrics = hidden
+        // A hidden Claude ring is not read, so one that comes back is read straight away.
+        if metric == .claude, shown { Task { await store.claude.refresh() } }
     }
 
     private func move(from source: Int, to destination: Int) {

@@ -1,5 +1,8 @@
 // Renders the app icon into an .iconset folder: a dark squircle holding the edge pill with three rings.
-// Usage: swift Scripts/make-icon.swift <output.iconset>
+// With --ico, also writes the Windows app's icon: the same drawing, filling more of its square as
+// Windows icons do, at the sizes Explorer and the taskbar use, and a PNG of it beside the .ico for
+// Windows notifications, which take their icon from a PNG file.
+// Usage: swift Scripts/make-icon.swift <output.iconset> [--ico <output.ico>]
 import AppKit
 
 let canvas: CGFloat = 1024
@@ -13,7 +16,7 @@ let green = rgb(0.36, 0.84, 0.52)
 let amber = rgb(1.0, 0.76, 0.28)
 let blue = rgb(0.42, 0.66, 1.0)
 
-func drawIcon(in ctx: CGContext) {
+func drawIcon(in ctx: CGContext, bodyShadow: Bool = true) {
     let space = CGColorSpace(name: CGColorSpace.sRGB)!
 
     // macOS icon grid: 824 pt body centred on the 1024 canvas.
@@ -21,7 +24,9 @@ func drawIcon(in ctx: CGContext) {
     let bodyPath = CGPath(roundedRect: body, cornerWidth: 185, cornerHeight: 185, transform: nil)
 
     ctx.saveGState()
-    ctx.setShadow(offset: CGSize(width: 0, height: -12), blur: 28, color: rgb(0, 0, 0, 0.45))
+    if bodyShadow {
+        ctx.setShadow(offset: CGSize(width: 0, height: -12), blur: 28, color: rgb(0, 0, 0, 0.45))
+    }
     ctx.addPath(bodyPath)
     ctx.setFillColor(rgb(0.07, 0.07, 0.08))
     ctx.fillPath()
@@ -101,22 +106,57 @@ func drawIcon(in ctx: CGContext) {
     }
 }
 
-func render(pixels: Int) -> Data {
+/// `windows`: the body grows to fill nearly all of the square and loses its drop shadow, which
+/// Windows draws itself where it wants one.
+func render(pixels: Int, windows: Bool = false) -> Data {
     let ctx = CGContext(data: nil, width: pixels, height: pixels, bitsPerComponent: 8, bytesPerRow: 0,
                         space: CGColorSpace(name: CGColorSpace.sRGB)!,
                         bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue)!
     ctx.interpolationQuality = .high
     ctx.scaleBy(x: CGFloat(pixels) / canvas, y: CGFloat(pixels) / canvas)
-    drawIcon(in: ctx)
+    if windows {
+        let grow: CGFloat = 1000 / 824
+        ctx.translateBy(x: canvas / 2, y: canvas / 2)
+        ctx.scaleBy(x: grow, y: grow)
+        ctx.translateBy(x: -canvas / 2, y: -canvas / 2)
+    }
+    drawIcon(in: ctx, bodyShadow: !windows)
     let rep = NSBitmapImageRep(cgImage: ctx.makeImage()!)
     return rep.representation(using: .png, properties: [:])!
 }
 
-guard CommandLine.arguments.count == 2 else {
-    FileHandle.standardError.write("usage: make-icon.swift <output.iconset>\n".data(using: .utf8)!)
+/// An .ico of PNG images, which Windows reads from Vista on.
+func icoFile(sizes: [Int]) -> Data {
+    let images = sizes.map { render(pixels: $0, windows: true) }
+    var data = Data()
+    func append<T: FixedWidthInteger>(_ value: T) {
+        withUnsafeBytes(of: value.littleEndian) { data.append(contentsOf: $0) }
+    }
+    append(UInt16(0)) // reserved
+    append(UInt16(1)) // icon
+    append(UInt16(sizes.count))
+    var offset = 6 + 16 * sizes.count
+    for (size, image) in zip(sizes, images) {
+        data.append(UInt8(size >= 256 ? 0 : size)) // 0 stands for 256
+        data.append(UInt8(size >= 256 ? 0 : size))
+        data.append(0) // no palette
+        data.append(0) // reserved
+        append(UInt16(1)) // planes
+        append(UInt16(32)) // bits per pixel
+        append(UInt32(image.count))
+        append(UInt32(offset))
+        offset += image.count
+    }
+    images.forEach { data.append($0) }
+    return data
+}
+
+let arguments = Array(CommandLine.arguments.dropFirst())
+guard arguments.count == 1 || (arguments.count == 3 && arguments[1] == "--ico") else {
+    FileHandle.standardError.write("usage: make-icon.swift <output.iconset> [--ico <output.ico>]\n".data(using: .utf8)!)
     exit(1)
 }
-let output = URL(fileURLWithPath: CommandLine.arguments[1])
+let output = URL(fileURLWithPath: arguments[0])
 try FileManager.default.createDirectory(at: output, withIntermediateDirectories: true)
 
 for points in [16, 32, 128, 256, 512] {
@@ -124,4 +164,10 @@ for points in [16, 32, 128, 256, 512] {
         let name = scale == 1 ? "icon_\(points)x\(points).png" : "icon_\(points)x\(points)@2x.png"
         try render(pixels: points * scale).write(to: output.appendingPathComponent(name))
     }
+}
+
+if arguments.count == 3 {
+    let ico = URL(fileURLWithPath: arguments[2])
+    try icoFile(sizes: [16, 20, 24, 32, 40, 48, 64, 96, 128, 256]).write(to: ico)
+    try render(pixels: 256, windows: true).write(to: ico.deletingPathExtension().appendingPathExtension("png"))
 }

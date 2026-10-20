@@ -4,6 +4,9 @@ import SMCKit
 @MainActor
 final class AppDelegate: NSObject, NSApplicationDelegate {
     private let store = StatsStore()
+    /// Made with the delegate, before launch finishes, so a notification that starts the app is heard.
+    private let notifier = Notifier()
+    private var alertMonitor: AlertMonitor?
     private var edgeController: EdgeController?
     private var settingsController: SettingsWindowController?
     private var defaultsObserver: NSObjectProtocol?
@@ -14,8 +17,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         defaults.registerMYUStatsDefaults()
         store.start(interval: defaults.double(forKey: SettingsKey.sampleInterval))
 
-        let settings = SettingsWindowController(store: store)
+        let alerts = AlertMonitor(store: store, notifier: notifier)
+        alertMonitor = alerts
+        let settings = SettingsWindowController(store: store, alerts: alerts)
         settingsController = settings
+        notifier.onOpen = { section in settings.show(section: section) }
         let controller = EdgeController(
             store: store,
             onOpenSettings: { settings.show() },
@@ -23,6 +29,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         )
         controller.show()
         edgeController = controller
+        store.claude.start()
+        alerts.start()
 
         // Restart sampling only when the interval itself changes, not on every settings write.
         defaultsObserver = NotificationCenter.default.addObserver(
@@ -38,6 +46,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
     func applicationWillTerminate(_ notification: Notification) {
         store.stop()
+        store.claude.stop()
+        alertMonitor?.stop()
     }
 
     /// Fans held at a manual speed stay there after the app is gone, so offer to hand them back first.

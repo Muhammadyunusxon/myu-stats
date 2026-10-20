@@ -14,10 +14,14 @@ the details when you point at one, and a full page in Settings when you want eve
 
 </div>
 
-CPU, memory, network, disk, thermals and battery sit in a glass pill welded to a screen edge. Point
-at a ring and its card slides out: load and history, where the memory goes, throughput, free space,
-temperatures and fans, battery health. Move away and the pill folds back into a thin tab, so it takes
-no room until you reach for it.
+CPU, memory, network, disk, thermals, battery and Claude Code's usage limits sit in a glass pill
+welded to a screen edge. Point at a ring and its card slides out: load and history, where the memory
+goes, throughput, free space, temperatures and fans, battery health, how much of your Claude session
+and week is left. Move away and the pill folds back into a thin tab, so it takes no room until you
+reach for it.
+
+A Windows version, with the same pill, cards and Settings, is in [`Windows/`](#windows). For now it
+is built from source.
 
 ## Download
 
@@ -48,22 +52,77 @@ Apple silicon, macOS 14 Sonoma or later. To build a copy from source instead, se
 | Ring | Card | Details page |
 |---|---|---|
 | **CPU** | Usage split into user, system and idle, a 40-sample chart, load average, core layout, uptime, the busiest processes | Every core (efficiency cores first on Apple silicon), processor, threads, the top 10 processes |
+| **GPU** | Load (rendering and tiling on Apple silicon), a 40-sample chart, memory in use, temperature | Each GPU with its cores and memory, history |
 | **Memory** | Used and available, app memory, wired, compressed, cached files, swap, memory pressure | The same breakdown with history, the top 10 processes by memory |
 | **Network** | Download and upload rate, peak, totals since boot | History, the active interface and its address |
 | **Disk** | Used and free space on the startup disk, a warning when it runs low | Every mounted volume, and what is using the space (below) |
 | **Thermals** | CPU, efficiency-core, GPU and battery temperatures, every fan | Every sensor group, each fan's mode and range, fan control |
 | **Battery** | Charge, time to full or empty, power source, health, cycle count, temperature | The same, as a page |
+| **Claude Code** | The current session and this week's limits, and when each resets | Each limit with the day and time it resets, when it was last read, a Refresh button |
 
 Each ring fills with its value and changes colour as it climbs: green, then amber, then red. Memory
 follows macOS's own memory pressure rather than the percentage, and the battery stays green while it
 is on power. Network fills relative to the recent peak, so an idle link does not look saturated.
 
 **What's using space.** The Disk page measures everything in the home folder plus Applications,
-largest first, and any folder opens to show what is inside it. Developer caches that are safe to
-clear (Xcode DerivedData and simulators, Gradle, the Pub cache, CocoaPods, npm, Homebrew, Docker)
-get their own list, each with the command that clears it. Measuring walks every file off the main
-thread, so a large folder takes a moment; macOS may ask for access to Documents, Downloads or
-Desktop, and declining just leaves those unmeasured.
+largest first, and any folder opens to show what is inside it. Developer caches (Xcode DerivedData
+and simulators, Gradle, the Pub cache, CocoaPods, npm, Homebrew, Docker) get their own list, and
+those a tool rebuilds have a **Clean** button: after a confirmation it moves the cache to the Trash,
+or runs the tool's own command (`xcrun simctl delete unavailable` for old simulators). It never
+touches what holds your own data, such as archives and emulators, and it leaves the Gradle versions
+the wrapper downloaded. Below them, **Flutter projects** lists every Flutter project under the usual
+project folders by the size of its `build` and `.dart_tool` folders, marks the ones untouched for 30
+days, and moves those folders to the Trash one project at a time or all unused ones at once, as
+`flutter clean` would. Measuring walks every file off the main thread, so a large folder takes a
+moment; macOS may ask for access to Documents, Downloads or Desktop, and declining just leaves those
+unmeasured.
+
+## Claude Code limits
+
+<img src="docs/images/claude.jpg" alt="The Claude Code card beside its ring" width="380" align="right">
+
+With Claude Code installed, a ring shows how much of its usage limits you have used: the current
+session and this week, plus any per-model weekly limit your plan has. The ring follows whichever
+limit is closest to running out, so a nearly spent week shows red even while the session is fresh.
+The card and the Claude Code page in Settings list every limit with when it resets.
+
+The figures are the ones Claude Code's own `/usage` prints, and they are asked of the installed
+`claude` command. MYU STATS never reads Claude Code's sign-in (no keychain access, no token file),
+and `/usage` sends no prompt to a model, so reading it costs none of your limits. Each read starts
+Claude Code for a few seconds, so it only runs while someone can see the figures: every five
+minutes while the ring is on screen, and once on unfolding a tucked-away pill if the last read is
+older than that. With the Claude alert on, it also runs every five minutes in the background.
+
+If Claude Code does not answer (it is signed out, say), the card says what to do. If a later read
+fails, the last good figures stay up, marked with when they were read.
+
+**Today's use.** Under the limits, the card shows how many tokens Claude Code has used since midnight,
+what they would cost at the API's list prices, and the busiest project; the Claude Code page breaks
+them down into input, output and cache tokens, requests, projects and models. They are counted from
+Claude Code's own session logs in `~/.claude/projects`, subagents included: only the token counts are
+taken from them, never what was said, and nothing leaves the Mac. The logs grow by hundreds of
+megabytes a day, so each file is read once and then only from where the last read stopped. The price
+is a yardstick for what the work would cost on the API, not what a subscription pays.
+
+<br clear="right">
+
+## Alerts
+
+Settings › Alerts turns on notifications for what needs attention, each with its own limit:
+
+| Alert | When |
+|---|---|
+| Claude Code | A limit reaches 70, 80, 90 or 95 %; once for the session and once per weekly limit, until it resets |
+| Disk | Free space on the startup disk drops below 5, 10, 20 or 50 GB |
+| Temperature | The CPU stays above 80 to 95 °C for a minute |
+| Processes | One process keeps a core busy (90 % or more) for 2 to 15 minutes, the way a stuck build does; the notification names it |
+| Memory | Memory pressure stays critical for a minute |
+
+Each alert comes once and again only after things have gone back to normal, never more than once in
+half an hour, and a click on it opens the page it is about. All are off until turned on; macOS asks
+for permission to show notifications with the first one, and **Send a test** shows what they look
+like. The checks read what the rings already measure, every ten seconds; processes are read every 30
+seconds, and only while that alert is on.
 
 ## Placement
 
@@ -103,6 +162,7 @@ while they are open the app shows up in ⌘-Tab. **Quit MYU STATS** sits at the 
 |---|---|
 | Metrics | Show, hide and reorder the rings; update every 1, 2 or 5 seconds |
 | Appearance | Edge, display, re-centre, surface, darkness, auto-hide and its delay |
+| Alerts | Notifications for Claude Code limits, low disk space, heat, busy processes and memory pressure, each with its limit |
 | General | Open at login, top-process scanning, reset everything to defaults |
 | Details | A full page per metric |
 
@@ -153,7 +213,7 @@ checking and warnings as errors, runs the tests and assembles the bundle on ever
 every pull request.
 
 The app has no window most of the time, so anything worth diagnosing goes to the unified log, under
-the categories `app`, `sampling`, `fans`, `storage`, `settings` and `smc`:
+the categories `app`, `sampling`, `fans`, `storage`, `settings`, `claude` and `smc`:
 
 ```sh
 /usr/bin/log stream --level info --predicate 'subsystem == "com.muhammadyunusxon.myustats"'
@@ -173,11 +233,73 @@ open "build/MYU STATS.app" --args -AppleLanguages '(uz)'
 
 ### Tests
 
-78 Swift Testing cases in `Tests/MYUStatsTests`: the pill's geometry on all four edges, placement and
+92 Swift Testing cases in `Tests/MYUStatsTests`: the pill's geometry on all four edges, placement and
 drop targets, formatting and settings, the store's sampling cadence and process demand (against a
 fake source), network counter parsing, storage navigation on real temporary files, fan-command
-parsing and rollback (against a fake SMC), the admin scripts, and the completeness of the string
-catalog.
+parsing and rollback (against a fake SMC), the admin scripts, Claude Code's `/usage` output and the
+store that reads it (against a fake source), and the completeness of the string catalog.
+
+## Windows
+
+The Windows app is a native WinUI 3 app in C#, in `Windows/`, and follows the macOS one: the same
+rings on any edge of any display, the same cards and Settings pages, the same Claude Code limits,
+alerts (as Windows notifications) and cache clean-up (to the Recycle Bin), English and Uzbek. It looks like Windows 11 rather than macOS: acrylic instead of Liquid Glass,
+rounded rectangles instead of the flared pill. What Windows cannot do:
+
+- **No fan control.** Windows has no interface for fan speeds; they sit behind vendor drivers. The
+  Thermals ring shows the ACPI thermal zones Windows reports, and hides itself on PCs that report
+  none. A dedicated GPU's temperature and fan speed show on the GPU ring where the driver reports them.
+- **Languages** are picked in Settings › General (Windows has no per-app language setting); the
+  default follows the Windows display language.
+
+Build it on Windows 10 (1809) or 11 with the [.NET 10 SDK](https://dotnet.microsoft.com/download):
+
+```powershell
+cd Windows
+./build.ps1 -Run   # test, build for this PC and start it
+./build.ps1        # test, then build\MYU-STATS-windows-x64.zip and -arm64.zip
+```
+
+Or open `Windows/MYUStats.sln` in Visual Studio. The build is self-contained: the folder in the zip
+runs on any Windows 10 or 11 PC without installing .NET or the Windows App SDK. It is not signed, so
+the first launch may show *Windows protected your PC*: **More info**, then **Run anyway**.
+
+Settings are kept in `%LOCALAPPDATA%\MYU STATS\settings.json`, and the log (Settings › General ›
+**Open folder**) in `%LOCALAPPDATA%\MYU STATS\logs`. **Open MYU STATS when you sign in** adds it to
+Task Manager's Startup apps.
+
+From a Mac, the Windows code can still be tested and compiled:
+
+```sh
+make windows-test    # the core library's tests (dotnet test)
+make windows-check   # type-check the whole WinUI app against the Windows App SDK
+```
+
+The UI is built in C# rather than XAML, so `windows-check` covers all of it; the one XAML file,
+`App.xaml`, only merges the standard resources. The WinUI build itself needs Windows.
+
+| Metric | Source on Windows |
+|---|---|
+| CPU | `GetSystemTimes`; per processor `NtQuerySystemInformation`; hybrid P/E cores from `GetLogicalProcessorInformationEx` |
+| GPU | The `GPU Engine` and `GPU Adapter Memory` performance counters Task Manager reads, per engine and per process; names and sizes from DXGI; temperature and fan speed from `D3DKMTQueryAdapterInfo` (WDDM 2.4) |
+| Memory | `GlobalMemoryStatusEx`, `GetPerformanceInfo` (commit, cache, pools), the low-memory notification for pressure |
+| Processes | One `NtQuerySystemInformation(SystemProcessInformation)` call: every process, CPU as a share of all processors and private working set, as Task Manager counts them |
+| Network | `GetIfTable2`, hardware adapters only (filter drivers and VPN adapters left out) |
+| Disk | `DriveInfo` for the Windows drive and other local drives; folder sizes by walking files, without following junctions |
+| Battery | `GetSystemPowerStatus`, plus the battery driver (`IOCTL_BATTERY_QUERY_*`) for health, cycles and rate |
+| Thermals | The `Thermal Zone Information` performance counters (no administrator rights needed) |
+| Claude Code | The same `claude /usage`, found where the native installer, npm, Bun, Volta, pnpm, Scoop or WinGet put it, or on PATH; today's use from the session logs in `%USERPROFILE%\.claude\projects` |
+| Alerts | Windows notifications; the app registers its name and icon under `HKCU\Software\Classes\AppUserModelId` the first time |
+| Clean-up | The shell's `SHFileOperation`, which moves to the Recycle Bin and asks before deleting anything too big for it |
+
+```
+Windows/
+├── MYUStats.Core/       models, samplers and native readers, settings, layout, Claude Code, strings (net10.0)
+├── MYUStats/            the WinUI app: pill, cards, edge strip, drop zones, Settings
+├── MYUStats.Tests/      xUnit: parsers against the Windows struct layouts, layout, store, Claude Code, strings
+├── MacCheck/            compiles the WinUI app on macOS
+└── build.ps1
+```
 
 ## Architecture
 
@@ -185,9 +307,11 @@ catalog.
 Sources/
 ├── MYUStats/            the app
 │   ├── App/             entry point, AppDelegate (reopen, quit guard), settings keys, logging
-│   ├── Metrics/         samplers, SamplingEngine, StatsStore, StorageAnalyzer, FanController
+│   ├── Alerts/          AlertEngine (when to speak up), AlertMonitor and the notifier
+│   ├── Metrics/         samplers, SamplingEngine, StatsStore, StorageAnalyzer, FanController,
+│   │                    ClaudeUsageReader and ClaudeUsageStore
 │   ├── Edge/            the pill: panel, controller, layout, cards, glass, drop zones, display choice
-│   └── Settings/        window, sidebar, Panes/ (Metrics, Appearance, General), Details/ (one per metric)
+│   └── Settings/        window, sidebar, Panes/ (Metrics, Appearance, Alerts, General), Details/ (one per metric)
 ├── SMCKit/              SMC client and FanControl, shared by the app and the helper
 └── myustats-fan/        the privileged fan helper
 Resources/               Info.plist, AppIcon.icns, Localizable.xcstrings
@@ -198,7 +322,8 @@ Tests/MYUStatsTests/
 actor, which runs every sampler off the main thread; in tests a fake. Only values that changed are
 published, through Observation, so a view redraws only when something it reads moves. Disk, battery
 and the network interface are read every fifth tick and thermals every second one, and processes are
-scanned only while a card or page is showing them.
+scanned only while a card or page is showing them. Claude Code's limits have a store of their own,
+`ClaudeUsageStore`, on a five-minute timer.
 
 The pill works in edge-relative terms, *along* and *across* the edge, and `EdgeLayout` is the one
 place that maps them onto a panel on a real screen, so all four edges share one set of rules and the
@@ -212,12 +337,14 @@ buttons, so it never takes a click meant for the window underneath.
 | Metric | Source |
 |---|---|
 | CPU | `host_statistics(HOST_CPU_LOAD_INFO)`, per core `host_processor_info`, `getloadavg`, `hw.perflevel*` sysctls |
+| GPU | Each `IOAccelerator`'s `PerformanceStatistics` (device, renderer and tiler load, memory in use); model and core count from the registry |
 | Memory | `host_statistics64(HOST_VM_INFO64)`; swap `vm.swapusage`; pressure `kern.memorystatus_vm_pressure_level` |
 | Processes | `proc_listallpids` and `proc_pid_rusage`, the current user's processes only |
 | Network | `sysctl(NET_RT_IFLIST2)` 64-bit counters on `en*` and `pdp_ip*` (VPN tunnels left out, so traffic is not counted twice); address via `getifaddrs` |
 | Disk | `volumeAvailableCapacityForImportantUsage`; other volumes via `mountedVolumeURLs`; folder sizes by walking files (`totalFileAllocatedSize`) |
 | Battery | IOKit power sources, plus the `AppleSmartBattery` registry entry for health and cycles |
 | Thermals and fans | The SMC, through `SMCKit`: sensor keys found by prefix (`Tp*`/`Te*` CPU, `Tg*` GPU, `TB*T` battery); fans `FNum`, `F<n>Ac/Mn/Mx/Md/Tg` |
+| Claude Code | `claude --print --no-session-persistence --strict-mcp-config /usage`, run from `~/Library/Application Support/MYU STATS/claude-usage`; the `Current session` and `Current week (…)` lines it prints. Today's use from the `usage` of each assistant turn in `~/.claude/projects/**/*.jsonl`, counted once per message and request |
 
 ### Fan helper
 
@@ -246,6 +373,9 @@ lowered again.
   the Thermals ring hides itself rather than showing a made-up number.
 - The fan helper is the price of asking for the password once: any process running as you can use it
   to change fan speeds, within each fan's range, without a password. **Remove** takes it away.
+- Claude Code's limits are read from the text `/usage` prints, which Anthropic does not document as
+  an interface. If a Claude Code update changes the wording, the card says the answer could not be
+  understood rather than guessing, until MYU STATS catches up.
 - The download is ad-hoc signed and not notarized, hence the quarantine step above.
 - Processes owned by root (WindowServer, kernel_task) are missing from the process lists, because
   reading them would need the app itself to run as root.

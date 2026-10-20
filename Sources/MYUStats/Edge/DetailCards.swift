@@ -10,11 +10,13 @@ struct DetailCard: View {
         VStack(alignment: .leading, spacing: 9) {
             switch metric {
             case .cpu: CPUCard(store: store)
+            case .gpu: GPUCard(store: store)
             case .memory: MemoryCard(store: store)
             case .network: NetworkCard(store: store)
             case .disk: DiskCard(store: store)
             case .thermals: ThermalsCard(store: store)
             case .battery: BatteryCard(store: store)
+            case .claude: ClaudeCard(claude: store.claude)
             }
             CardDivider()
             DetailsButton(isHovered: isDetailsHovered)
@@ -74,6 +76,57 @@ private struct CPUCard: View {
             CardDivider()
             ProcessList(title: String(localized: "Top processes"), processes: Array(store.topByCPU.prefix(4))) { Format.percent($0.cpu) }
         }
+    }
+}
+
+private struct GPUCard: View {
+    var store: StatsStore
+
+    var body: some View {
+        if let gpu = store.gpu {
+            let color = Level.color(for: gpu.utilization)
+            CardHeader(symbol: StatMetric.gpu.symbol, title: String(localized: "GPU"), subtitle: GPUText.subtitle(gpu))
+            UsageSection(
+                title: String(localized: "Usage"),
+                trailing: Format.percent(gpu.utilization),
+                fraction: gpu.utilization,
+                color: color,
+                caption: GPUText.caption(gpu)
+            )
+            Sparkline(values: store.gpuHistory, color: color, ceiling: 1).frame(height: 26)
+            CardDivider()
+            if let used = gpu.memoryUsed {
+                DetailRow(label: String(localized: "Memory in use"), value: GPUText.memory(used: used, total: gpu.memoryTotal))
+            }
+            if let celsius = store.thermals?.gpuAverage {
+                DetailRow(label: String(localized: "Temperature"), value: Format.temperature(celsius),
+                          valueColor: Level.temperatureColor(celsius))
+            }
+            ForEach(store.gpus.filter { $0.id != gpu.id }) { other in
+                DetailRow(label: other.name, value: Format.percent(other.utilization))
+            }
+        } else {
+            CardHeader(symbol: StatMetric.gpu.symbol, title: String(localized: "GPU"), subtitle: String(localized: "Unavailable"))
+        }
+    }
+}
+
+/// Wording shared by the GPU card and the GPU details page.
+enum GPUText {
+    static func subtitle(_ gpu: GPUReading) -> String {
+        gpu.cores.map { String(localized: "\(gpu.name) · \($0) cores") } ?? gpu.name
+    }
+
+    /// Apple silicon's split into rendering and tiling, where the GPU reports it.
+    static func caption(_ gpu: GPUReading) -> String {
+        guard let renderer = gpu.renderer, let tiler = gpu.tiler else {
+            return String(localized: "\(Format.percent(gpu.utilization)) busy")
+        }
+        return String(localized: "Renderer \(Format.percent(renderer)) · Tiler \(Format.percent(tiler))")
+    }
+
+    static func memory(used: UInt64, total: UInt64?) -> String {
+        total.map { String(localized: "\(Format.bytes(used)) of \(Format.bytes($0))") } ?? Format.bytes(used)
     }
 }
 

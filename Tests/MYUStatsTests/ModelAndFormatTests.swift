@@ -30,6 +30,23 @@ struct FormatTests {
         #expect(Format.uptime(3 * 86_400 + 2 * 3_600 + 30) == "3d 2h")
     }
 
+    @Test func tokens() {
+        #expect(Format.tokens(845) == "845")
+        #expect(Format.tokens(12_345) == "12K")
+        #expect(Format.tokens(9_949) == "9.9K")
+        #expect(Format.tokens(3_400_000) == "3.4M")
+        #expect(Format.tokens(740_850_039) == "741M")
+        #expect(Format.tokens(999_700) == "1.0M")
+        #expect(Format.tokens(1_200_000_000) == "1.2B")
+    }
+
+    @Test func cost() {
+        let english = Locale(identifier: "en_US")
+        #expect(Format.cost(278.614, locale: english) == "$278.61")
+        #expect(Format.cost(0, locale: english) == "$0.00")
+        #expect(Format.cost(0.001, locale: english) == "<$0.01")
+    }
+
     @Test func temperatureAndRPM() {
         #expect(Format.temperature(nil) == "–")
         #expect(Format.temperature(54.6) == "55 °C")
@@ -112,18 +129,37 @@ struct SettingsTests {
         #expect(defaults.screenEdge == .right)
     }
 
-    @Test func metricOrderKeepsUserOrderAndAppendsNewMetrics() {
+    @Test("a metric the saved order lacks goes after the metrics that come before it by default")
+    func metricOrderPlacesNewMetrics() {
         let defaults = freshDefaults()
-        // As if saved by a version that did not know about thermals yet.
+        // As if saved by a version that did not know about the GPU, thermals and Claude Code yet.
         defaults.set(["battery", "cpu", "memory", "network", "disk"], forKey: SettingsKey.metricOrder)
-        #expect(defaults.metricOrder == [.battery, .cpu, .memory, .network, .disk, .thermals])
+        #expect(defaults.metricOrder == [.battery, .cpu, .gpu, .memory, .network, .disk, .thermals, .claude])
+        // Someone who moved the CPU ring down still gets the GPU ring next to it.
+        defaults.set(["memory", "network", "cpu", "disk", "thermals", "battery", "claude"], forKey: SettingsKey.metricOrder)
+        #expect(defaults.metricOrder == [.memory, .network, .cpu, .gpu, .disk, .thermals, .battery, .claude])
     }
 
     @Test func metricOrderDropsUnknownNames() {
         let defaults = freshDefaults()
-        defaults.set(["gpu", "cpu"], forKey: SettingsKey.metricOrder)
+        defaults.set(["fan", "cpu", "cpu"], forKey: SettingsKey.metricOrder)
         #expect(defaults.metricOrder.first == .cpu)
         #expect(defaults.metricOrder.count == StatMetric.allCases.count)
+    }
+
+    @Test("alerts are off until turned on, and reset turns them off again")
+    func alertSettings() {
+        let defaults = freshDefaults()
+        #expect(!AlertSettings(defaults).isAnyOn)
+        defaults.set(true, forKey: SettingsKey.alertDisk)
+        defaults.set(20.0, forKey: SettingsKey.alertDiskFreeGB)
+        defaults.set(true, forKey: SettingsKey.alertClaude)
+        let settings = AlertSettings(defaults)
+        #expect(settings.diskFreeBytes == 20_000_000_000)
+        #expect(settings.claudeThreshold == AlertSettings.defaultClaudeThreshold)
+        #expect(settings.temperatureLimit == nil)
+        defaults.resetMYUStatsSettings()
+        #expect(!AlertSettings(defaults).isAnyOn)
     }
 
     @Test("reset clears every user setting back to its default")

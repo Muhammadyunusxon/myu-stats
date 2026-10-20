@@ -6,6 +6,8 @@ struct DiskDetail: View {
     var storage: StorageAnalyzer
     @State private var volumes: [DiskUsage] = []
     @State private var showAll = false
+    /// A clean-up waiting for the user to confirm it.
+    @State private var confirming: CleanRequest?
 
     private static let collapsedCount = 20
 
@@ -55,7 +57,7 @@ struct DiskDetail: View {
                 ForEach(visible) { item in
                     StorageRow(item: item, reference: reference,
                                onOpen: item.isDirectory ? { storage.open(item) } : nil,
-                               onReveal: { storage.reveal(item) })
+                               onReveal: { storage.reveal(item.url) })
                 }
                 if storage.items.count > Self.collapsedCount {
                     Button(showAll ? String(localized: "Show fewer") : String(localized: "Show all \(storage.items.count) items")) { showAll.toggle() }
@@ -79,17 +81,33 @@ struct DiskDetail: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
         }
 
+        if let report = storage.cleanupReport {
+            Section {
+                Label(report, systemImage: "checkmark.circle")
+                    .foregroundStyle(.secondary)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+        }
+
         if storage.hasScanned, !storage.developerCaches.isEmpty {
             Section {
                 let reference = storage.developerCaches.compactMap(\.size).max() ?? 1
                 ForEach(storage.developerCaches) { item in
-                    StorageRow(item: item, reference: reference, onOpen: nil, onReveal: { storage.reveal(item) })
+                    StorageRow(item: item, reference: reference, onOpen: nil, onReveal: { storage.reveal(item.url) },
+                               onClean: item.cleanup == nil ? nil : { confirming = .cache(item) },
+                               isCleaning: storage.cleaning.contains(item.url))
                 }
             } header: {
                 Text("Developer and app caches")
             } footer: {
-                Text("All of these are rebuilt when needed. Clear them with the command shown, or delete the folder in Finder.")
+                Text("Clean moves a cache to the Trash, or runs its tool's own command, and the tool rebuilds what it needs. Items without it hold your own data, such as archives and emulators.")
+                    .multilineTextAlignment(.leading)
+                    .frame(maxWidth: .infinity, alignment: .leading)
             }
+        }
+
+        if storage.hasScanned, storage.isFindingProjects || !storage.projects.isEmpty {
+            FlutterProjectsSection(storage: storage, confirming: $confirming)
         }
 
         Section {
@@ -106,6 +124,23 @@ struct DiskDetail: View {
             Text("Other volumes")
         }
         .onAppear { volumes = Self.otherVolumes() }
+        .alert(confirming?.title ?? "", isPresented: Binding(get: { confirming != nil }, set: { if !$0 { confirming = nil } }),
+               presenting: confirming) { request in
+            Button(request.action, role: .destructive) { perform(request) }
+            Button("Cancel", role: .cancel) {}
+        } message: { request in
+            Text(request.message)
+        }
+    }
+
+    private func perform(_ request: CleanRequest) {
+        Task {
+            switch request {
+            case .cache(let item): await storage.clean(item)
+            case .project(let project): await storage.clean(project)
+            case .stale: await storage.cleanStaleProjects()
+            }
+        }
     }
 
     /// Mounted, visible volumes other than the startup disk.
@@ -127,12 +162,151 @@ struct DiskDetail: View {
     }
 }
 
+/// A clean-up to confirm, with the words for the confirmation.
+private enum CleanRequest {
+    case cache(StorageItem)
+    case project(FlutterProject)
+    case stale([FlutterProject])
+
+    var title: String {
+        switch self {
+        case .cache(let item): String(localized: "Clean \(item.name)?")
+        case .project(let project): String(localized: "Clean \(project.name)?")
+        case .stale(let projects): String(localized: "Clean \(projects.count) unused projects?")
+        }
+    }
+
+    var message: String {
+        switch self {
+        case .cache(let item):
+            if case .command(let executable, let arguments) = item.cleanup {
+                let command = ([URL(fileURLWithPath: executable).lastPathComponent] + arguments).joined(separator: " ")
+                return String(localized: "Runs \(command), which deletes the simulators of iOS versions no longer installed. They do not go to the Trash.")
+            }
+            return String(localized: "It moves to the Trash, and its tool rebuilds what it needs, so the next build or install may take longer.")
+        case .project(let project):
+            return String(localized: "Its build and .dart_tool folders move to the Trash (\(Format.diskBytes(project.size ?? 0))). The next run builds them again.")
+        case .stale(let projects):
+            let size = projects.compactMap(\.size).reduce(0, +)
+            return String(localized: "Their build and .dart_tool folders move to the Trash (\(Format.diskBytes(size))). Each project builds them again on its next run.")
+        }
+    }
+
+    var action: String {
+        if case .cache(let item) = self, case .command = item.cleanup { return String(localized: "Clean") }
+        return String(localized: "Move to Trash")
+    }
+}
+
+/// Flutter projects with build output, and the ones untouched for a month that can go in one step.
+private struct FlutterProjectsSection: View {
+    var storage: StorageAnalyzer
+    @Binding var confirming: CleanRequest?
+
+    var body: some View {
+        let stale = storage.projects.filter { $0.isStale() && $0.size != nil }
+        Section {
+            if storage.projects.isEmpty {
+                HStack(spacing: 8) {
+                    ProgressView().controlSize(.small)
+                    Text("Looking for Flutter projects…").foregroundStyle(.secondary)
+                }
+            }
+            let reference = storage.projects.compactMap(\.size).max() ?? 1
+            ForEach(storage.projects) { project in
+                ProjectRow(project: project, reference: reference,
+                           isCleaning: storage.cleaning.contains(project.url),
+                           onReveal: { storage.reveal(project.url) },
+                           onClean: { confirming = .project(project) })
+            }
+        } header: {
+            HStack {
+                Text("Flutter projects")
+                Spacer()
+                if !stale.isEmpty {
+                    Button(String(localized: "Clean unused (\(stale.count))")) { confirming = .stale(stale) }
+                        .disabled(!storage.cleaning.isDisjoint(with: stale.map(\.url)))
+                }
+            }
+        } footer: {
+            Text("Clean moves only build and .dart_tool to the Trash, what flutter clean removes. A project counts as unused after 30 days without a build or an edit. Searched in folders such as Projects, Developer and Documents.")
+                .multilineTextAlignment(.leading)
+                .frame(maxWidth: .infinity, alignment: .leading)
+        }
+    }
+}
+
+private struct ProjectRow: View {
+    let project: FlutterProject
+    let reference: Int64
+    let isCleaning: Bool
+    let onReveal: () -> Void
+    let onClean: () -> Void
+
+    var body: some View {
+        HStack(spacing: 10) {
+            Image(nsImage: NSWorkspace.shared.icon(forFile: project.url.path))
+                .resizable()
+                .frame(width: 18, height: 18)
+            VStack(alignment: .leading, spacing: 4) {
+                HStack {
+                    Text(project.name).lineLimit(1).truncationMode(.middle)
+                    if project.isStale() {
+                        Text("Unused")
+                            .font(.caption2.weight(.semibold))
+                            .foregroundStyle(Level.color(for: 0.7))
+                    }
+                    Spacer()
+                    if let size = project.size {
+                        Text(Format.diskBytes(size)).monospacedDigit().foregroundStyle(.secondary)
+                    } else {
+                        ProgressView().controlSize(.mini)
+                    }
+                }
+                Text(caption).font(.caption).foregroundStyle(.secondary).lineLimit(1).truncationMode(.head)
+                BarGauge(fraction: Double(project.size ?? 0) / Double(max(reference, 1)), color: Level.accent)
+            }
+            Button(action: onReveal) { Image(systemName: "magnifyingglass") }
+                .buttonStyle(SettingsIconButtonStyle())
+                .help("Show in Finder")
+            CleanButton(isCleaning: isCleaning, action: onClean)
+                .disabled(project.size == nil)
+        }
+        .padding(.vertical, 2)
+    }
+
+    /// "~/Projects/app · used 3 months ago".
+    private var caption: String {
+        let folder = (project.url.deletingLastPathComponent().path as NSString).abbreviatingWithTildeInPath
+        let used = RelativeDateTimeFormatter().localizedString(for: project.lastUsed, relativeTo: Date())
+        return String(localized: "\(folder) · used \(used)")
+    }
+}
+
+/// The trash can on a cleanable row, or a spinner while it cleans.
+private struct CleanButton: View {
+    let isCleaning: Bool
+    let action: () -> Void
+
+    var body: some View {
+        if isCleaning {
+            ProgressView().controlSize(.small).frame(width: 22, height: 22)
+        } else {
+            Button(action: action) { Image(systemName: "trash") }
+                .buttonStyle(SettingsIconButtonStyle())
+                .help("Clean")
+        }
+    }
+}
+
 /// One file or folder with its size, a bar relative to the largest sibling, and actions.
 private struct StorageRow: View {
     let item: StorageItem
     let reference: Int64
     let onOpen: (() -> Void)?
     let onReveal: () -> Void
+    var onClean: (() -> Void)? = nil
+    var isCleaning = false
 
     var body: some View {
         HStack(spacing: 10) {
@@ -161,6 +335,9 @@ private struct StorageRow: View {
                 Button(action: onOpen) { Image(systemName: "chevron.right") }
                     .buttonStyle(SettingsIconButtonStyle())
                     .help("Look inside")
+            } else if let onClean {
+                CleanButton(isCleaning: isCleaning, action: onClean)
+                    .disabled(item.size == nil)
             } else {
                 Color.clear.frame(width: 22, height: 22)
             }

@@ -79,8 +79,10 @@ final class EdgeController {
                 MainActor.assumeIsolated { self?.updateHover() }
             })
         }
-        // Battery and thermal sensors arrive after the first slow sample; re-layout when either appears.
+        // Battery and thermal sensors arrive after the first slow sample, and Claude Code can be
+        // installed or removed while the app runs; re-layout when any of them changes.
         store.onSensorsChanged = { [weak self] in self?.reposition() }
+        store.claude.onAvailabilityChanged = { [weak self] in self?.reposition() }
     }
 
     // MARK: - Placement
@@ -96,18 +98,12 @@ final class EdgeController {
         guard let screen = DisplayChoice.screen() else { return }
         let defaults = UserDefaults.standard
         let hidden = defaults.hiddenMetrics
-        let metrics = defaults.metricOrder.filter { metric in
-            guard !hidden.contains(metric) else { return false }
-            switch metric {
-            case .battery: return store.battery != nil
-            case .thermals: return store.thermals != nil
-            default: return true
-            }
-        }
+        let metrics = defaults.metricOrder.filter { !hidden.contains($0) && store.isAvailable($0) }
         let layout = EdgeLayout(edge: defaults.screenEdge, cellCount: metrics.count)
 
         if state.metrics != metrics { state.metrics = metrics }
         if state.layout != layout { state.layout = layout }
+        updateClaudeVisibility()
         if let hovered = state.hovered, !metrics.contains(hovered) { setHovered(nil) }
 
         guard !metrics.isEmpty else {
@@ -337,6 +333,13 @@ final class EdgeController {
         withAnimation(revealed ? Motion.unfold : Motion.fold) {
             state.isRevealed = revealed
         }
+        updateClaudeVisibility()
+    }
+
+    /// Claude Code's limits are read only while their ring can be seen; see `ClaudeUsageStore.isOnScreen`.
+    private func updateClaudeVisibility() {
+        let visible = state.isRevealed && state.metrics.contains(.claude)
+        if store.claude.isOnScreen != visible { store.claude.isOnScreen = visible }
     }
 
     private func setHovered(_ metric: StatMetric?) {
